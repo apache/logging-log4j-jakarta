@@ -1,0 +1,23 @@
+////
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+////
+
+https://github.com/apache/logging-log4j-jakarta-gui/actions[image:https://github.com/apache/logging-log4j-jakarta/workflows/build/badge.svg[Actions Status]]
+https://search.maven.org/search?q=g:org.apache.logging.log4j%20a:log4j-jakarta-bom[image:https://img.shields.io/maven-central/v/org.apache.logging.log4j/log4j-jakarta-bom.svg[Maven Central]]
+https://www.apache.org/licenses/LICENSE-2.0.txt[image:https://img.shields.io/github/license/apache/logging-log4j-jakarta.svg[License]]
+
+This project provides various https://jakarta.ee/[Jakarta]-specific https://logging.apache.org/log4j[Log4j] components: `log4j-jakarta-jms`, `log4j-jakarta-smtp`, `log4j-jakarta-web`, etc.
+See https://logging.apache.org/log4j/jakarta[the project website] for details.

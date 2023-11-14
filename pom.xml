@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- ██     ██  █████  ██████  ███    ██ ██ ███    ██  ██████  ██
+       ██     ██ ██   ██ ██   ██ ████   ██ ██ ████   ██ ██       ██
+       ██  █  ██ ███████ ██████  ██ ██  ██ ██ ██ ██  ██ ██   ███ ██
+       ██ ███ ██ ██   ██ ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██
+        ███ ███  ██   ██ ██   ██ ██   ████ ██ ██   ████  ██████  ██
+
+       `log4j-jakarta` project modules should use `log4j-jakarta-parent` as their parents, not this POM!
+       This POM constitutes the BOM to be imported by applications using `log4j-jakarta` project modules. -->
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.logging</groupId>
+    <artifactId>logging-parent</artifactId>
+    <version>10.3.0</version>
+  </parent>
+
+  <groupId>org.apache.logging.log4j</groupId>
+  <artifactId>log4j-jakarta-bom</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+
+  <name>Apache Log4j Jakarta BOM</name>
+  <description>Bill-of-Materials (BOM) for Jakarta-specific Log4j components.</description>
+
+  <url>https://logging.apache.org/log4j/jakarta</url>
+
+  <inceptionYear>2023</inceptionYear>
+
+  <developers>
+
+    <developer>
+      <id>ckozak</id>
+      <name>Carter Kozak</name>
+      <email>ckozak@apache.org</email>
+      <url>https://github.com/carterkozak</url>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New York</timezone>
+    </developer>
+
+    <developer>
+      <id>ggregory</id>
+      <name>Gary Gregory</name>
+      <email>ggregory@apache.org</email>
+      <url>https://www.garygregory.com</url>
+      <organization>The Apache Software Foundation</organization>
+      <organizationUrl>https://www.apache.org/</organizationUrl>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New_York</timezone>
+    </developer>
+
+    <developer>
+      <id>mattsicker</id>
+      <name>Matt Sicker</name>
+      <email>mattsicker@apache.org</email>
+      <organization>Apple</organization>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/Chicago</timezone>
+    </developer>
+
+    <developer>
+      <id>pkarwasz</id>
+      <name>Piotr P. Karwasz</name>
+      <email>pkarwasz@apache.org</email>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>Europe/Warsaw</timezone>
+    </developer>
+
+    <developer>
+      <id>rgoers</id>
+      <name>Ralph Goers</name>
+      <email>rgoers@apache.org</email>
+      <organization>Nextiva</organization>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/Phoenix</timezone>
+    </developer>
+
+    <developer>
+      <id>vy</id>
+      <name>Volkan Yazıcı</name>
+      <email>vy@apache.org</email>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>Europe/Amsterdam</timezone>
+    </developer>
+
+  </developers>
+
+  <modules>
+
+    <!-- the parent POM must come first: -->
+    <module>log4j-jakarta-parent</module>
+
+    <!-- Modules here must have a corresponding entry in `dependencyManagement > dependencies` block below! -->
+    <module>log4j-jms</module>
+    <module>log4j-jakarta-smtp</module>
+    <module>log4j-jakarta-web</module>
+
+  </modules>
+
+  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
+    <connection>scm:git:git@github.com:apache/logging-log4j-jakarta.git</connection>
+    <developerConnection>scm:git:git@github.com:apache/logging-log4j-jakarta.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/apache/logging-log4j-jakarta</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/apache/logging-log4j-jakarta/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/apache/logging-log4j-jakarta/actions</url>
+  </ciManagement>
+
+  <distributionManagement>
+    <downloadUrl>https://logging.apache.org/log4j/jakarta/latest/#distribution</downloadUrl>
+  </distributionManagement>
+
+  <properties>
+
+    <!-- project version -->
+    <revision>3.0.0-SNAPSHOT</revision>
+
+    <!-- `project.build.outputTimestamp` is required to be present for reproducible builds.
+         We actually inherit one from the `org.apache:apache` through our parent `org.apache.logging:logging-parent`.
+         Though inheriting this property has two undesired consequences:
+         1. `artifact:compare` dumps an `ERROR` log stating that this `property should not be inherited but defined` (apache/logging-parent#50)
+         2. This value is employed in various places while creating the distribution
+         To mitigate these, we define a *dummy* value here and let the CI replace it during a release.
+         Hence, *DO NOT MANUALLY EDIT THIS VALUE*! -->
+    <project.build.outputTimestamp>2023-11-14T20:54:49Z</project.build.outputTimestamp>
+
+    <!-- disable `maven-site-plugin`-->
+    <maven.site.skip>true</maven.site.skip>
+    <maven.site.deploy.skip>true</maven.site.deploy.skip>
+
+  </properties>
+
+  <!-- `dependencyManagement` must only contain `log4j-tools` modules and nothing else!
+       Modules here must have a corresponding entry in `modules` block above! -->
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-jakarta-smtp</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-jakarta-web</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-smtp</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+
+      <!-- Enable BOM flattening -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>${flatten-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>flatten-bom</id>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <inherited>false</inherited>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
