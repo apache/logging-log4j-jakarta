@@ -20,15 +20,15 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
+import jakarta.jms.Connection;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.MapMessage;
+import jakarta.jms.Message;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Session;
 import javax.naming.NamingException;
 
 import org.apache.logging.log4j.core.Layout;
@@ -227,8 +227,8 @@ public class JmsManager extends AbstractManager {
      *
      * @param name The name to use for this JmsManager.
      * @param jndiProperties JNDI properties.
-     * @param connectionFactoryName The binding name for the {@link javax.jms.ConnectionFactory}.
-     * @param destinationName The binding name for the {@link javax.jms.Destination}.
+     * @param connectionFactoryName The binding name for the {@link jakarta.jms.ConnectionFactory}.
+     * @param destinationName The binding name for the {@link jakarta.jms.Destination}.
      * @param userName The userName to connect with or {@code null} for no authentication.
      * @param password The password to use with the given userName or {@code null} for no authentication.
      * @param immediateFail Whether or not to fail immediately with a {@link AppenderLoggingException} when

@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ////
 
-[#log4j-jms]
-== Log4j JMS Appender
+[#log4j-jakarta-jms]
+== Log4j Jakarta JMS Appender
 
 TODO

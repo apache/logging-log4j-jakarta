@@ -19,7 +19,7 @@ package org.apache.logging.log4j.jms.appender;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Filter;
@@ -67,12 +67,12 @@ public class JmsAppender extends AbstractAppender {
         private String securityCredentials;
 
         @PluginBuilderAttribute
-        @Required(message = "A javax.jms.ConnectionFactory JNDI name must be specified")
+        @Required(message = "A jakarta.jms.ConnectionFactory JNDI name must be specified")
         private String factoryBindingName;
 
         @PluginBuilderAttribute
         @PluginAliases({ "queueBindingName", "topicBindingName" })
-        @Required(message = "A javax.jms.Destination JNDI name must be specified")
+        @Required(message = "A jakarta.jms.Destination JNDI name must be specified")
         private String destinationBindingName;
 
         @PluginBuilderAttribute

@@ -122,7 +122,7 @@
     <module>log4j-jakarta-parent</module>
 
     <!-- Modules here must have a corresponding entry in `dependencyManagement > dependencies` block below! -->
-    <module>log4j-jms</module>
+    <module>log4j-jakarta-jms</module>
     <module>log4j-jakarta-smtp</module>
     <module>log4j-jakarta-web</module>
 

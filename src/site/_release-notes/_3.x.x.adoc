@@ -41,6 +41,14 @@
 This minor release contains various bug fixes and improvements.
 
 
+==== Added
+
+* Convert `log4j-jms` based on Java EE 8+ to `log4j-jakarta-jms` based on Jakarta EE 9+ (https://github.com/apache/logging-log4j2/issues/1966[#1966])
+
 ==== Changed
 
 * Fork Jakarta-specific components from `logging-log4j2` repository to `logging-log4j-jakarta` (https://github.com/apache/logging-log4j2/issues/1966[#1966])
+
+==== Removed
+
+* Remove `log4j-jms` based on Java EE 8+ (https://github.com/apache/logging-log4j2/issues/1966[#1966])

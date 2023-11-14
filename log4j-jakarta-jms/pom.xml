@@ -26,9 +26,9 @@
     <relativePath>../log4j-jakarta-parent</relativePath>
   </parent>
 
-  <artifactId>log4j-jms</artifactId>
+  <artifactId>log4j-jakarta-jms</artifactId>
 
-  <name>Apache Log4j JMS Appender</name>
+  <name>Apache Log4j Jakarta JMS Appender</name>
   <description>Java Message Service (JMS) Appender based on Jakarta EE 9+ for the Apache Log4j.</description>
 
   <properties>
@@ -38,7 +38,7 @@
       -->
     <bnd-extra-module-options>
       <!-- Filebased module names must be `static` -->
-      javax.jms.api;substitute="javax.jms-api";static=true;transitive=false
+      jakarta.jms.api;substitute="jakarta.jms-api";static=true;transitive=false
     </bnd-extra-module-options>
 
   </properties>
@@ -46,8 +46,8 @@
   <dependencies>
 
     <dependency>
-      <groupId>javax.jms</groupId>
-      <artifactId>javax.jms-api</artifactId>
+      <groupId>jakarta.jms</groupId>
+      <artifactId>jakarta.jms-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
