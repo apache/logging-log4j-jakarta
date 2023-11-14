@@ -28,7 +28,7 @@
 
   <artifactId>log4j-jakarta-smtp</artifactId>
 
-  <name>Apache Log4j Jakarta SMTP</name>
+  <name>Apache Log4j Jakarta SMTP Appender</name>
   <description>Simple Mail Transfer Protocol (SMTP) Appender based on Jakarta EE 9+ for the Apache Log4j.</description>
 
   <properties>
