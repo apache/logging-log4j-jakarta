@@ -18,4 +18,171 @@ limitations under the License.
 [#log4j-jakarta-smtp]
 == Log4j Jakarta SMTP
 
-TODO
+Log4j Jakarta SMTP appender sends an e-mail when a specific logging event occurs, typically on
+errors or fatal errors.
+
+[#log4j-jakarta-smtp-dependency]
+=== Dependency
+
+You need to have the `org.apache.logging.log4j:log4j-jakarta-smtp` dependency in your classpath:
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+  <groupId>org.apache.logging.log4j</groupId>
+  <artifactId>log4j-jakarta-smtp</artifactId>
+  <version>{project-version}</version>
+</dependency>
+----
+
+[WARNING]
+====
+SMTP Appender requires `jakarta.activation:jakarta.activation-api` and `jakarta.mail:jakarta.mail-api` implementations at runtime.
+You can use `org.eclipse.angus:angus-activation` and `org.eclipse.angus:angus-mail`, or any other of your preference.
+====
+
+[#log4j-jakarta-smtp-config]
+=== Configuration
+
+The number of logging events delivered in an e-mail depend on the value of `bufferSize` option.
+The SMTP Appender keeps only the last `bufferSize` logging events in its cyclic buffer.
+This keeps memory requirements at a reasonable level while still delivering useful application context.
+All events in the buffer are included in the email.
+The buffer will contain the most recent events of level `TRACE` to `WARN` preceding the event that triggered the email.
+
+The default behavior is to trigger sending an email whenever an `ERROR` or higher severity event is logged and to format it as HTML.
+The circumstances on when the email is sent can be controlled by setting one or more filters on the Appender.
+As with other Appenders, the formatting can be controlled by specifying a Layout for the Appender.
+
+.SMTP Appender parameters
+[cols="1m,1m,1m,5",options="header"]
+|===
+
+|Parameter
+|Type
+|Default
+|Description
+
+|name
+|String
+|
+|The name of the Appender
+
+|from
+|String
+|
+|The email address of the sender
+
+|replyTo
+|String
+|
+|The comma-separated list of reply-to email addresses
+
+|to
+|String
+|
+|The comma-separated list of recipient email addresses
+
+|cc
+|String
+|
+|The comma-separated list of CC email addresses
+
+|bcc
+|String
+|
+|The comma-separated list of BCC email addresses
+
+|subject
+|String
+|
+|The subject of the email message
+
+|bufferSize
+|int
+|512
+|The maximum number of log events to be buffered for inclusion in the message
+
+|layout
+|Layout
+|`HtmlLayout`
+|The Layout to use to format the `LogEvent`
+
+|filter
+|Filter
+|
+|A Filter to determine if the event should be handled by this Appender.
+More than one Filter may be used by using a `CompositeFilter`.
+
+|smtpDebug
+|boolean
+|false
+|When set to true enables session debugging on `STDOUT`
+
+|smtpHost
+|String
+|
+|The SMTP hostname to send to.
+
+This parameter is **required**.
+
+|smtpPassword
+|String
+|
+|The password required to authenticate against the SMTP server
+
+|smtpPort
+|integer
+|
+|The SMTP port to send to
+
+|smtpProtocol
+|String
+|smtp
+|The SMTP transport protocol; e.g., `smtps`
+
+|smtpUsername
+|String
+|
+|The username required to authenticate against the SMTP server
+
+|ignoreExceptions
+|boolean
+|true
+|Indicates if exceptions encountered while appending events to be internally logged and then ignored.
+When set to `false` exceptions will be propagated to the caller, instead.
+You must set this to `false` when wrapping this Appender in a `FailoverAppender`.
+
+|SSL
+|SslConfiguration
+|
+|Contains the configuration for the `KeyStore` and `TrustStore`.
+See https://logging.apache.org/log4j/2.x/manual/appenders.html#SSL[SSL Configuration].
+
+|===
+
+.Example `log4j.xml` demonstrating SMTP Appender usage
+[source]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="MyApp">
+
+  <Appenders>
+    <SMTP name="Mail"
+          subject="Error Log"
+          to="errors@logging.apache.org"
+          from="test@logging.apache.org"
+          smtpHost="localhost"
+          smtpPort="25"
+          bufferSize="50">
+    </SMTP>
+  </Appenders>
+
+  <Loggers>
+    <Root level="error">
+      <AppenderRef ref="Mail"/>
+    </Root>
+  </Loggers>
+
+</Configuration>
+----

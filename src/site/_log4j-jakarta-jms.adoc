@@ -18,4 +18,192 @@ limitations under the License.
 [#log4j-jakarta-jms]
 == Log4j Jakarta JMS Appender
 
-TODO
+The JMS Appender sends the formatted log event to a JMS Destination.
+
+[#log4j-jakarta-jms-dependency]
+=== Dependency
+
+You need to have the `org.apache.logging.log4j:log4j-jakarta-jms` dependency in your classpath:
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+  <groupId>org.apache.logging.log4j</groupId>
+  <artifactId>log4j-jakarta-jms</artifactId>
+  <version>{project-version}</version>
+</dependency>
+----
+
+[WARNING]
+====
+JMS Appender requires a `jakarta.jms:jakarta.jms-api` implementation (e.g., the one provided by Eclipse GlassFish or Apache ActiveMQ) at runtime.
+====
+
+[#log4j-jakarta-jms-config]
+=== Configuration
+
+[WARNING]
+====
+The JMS Appender requires JNDI support so as of release 2.15.1 and will not function unless `log4j2.enableJndi=true` is configured as a system property or environment variable.
+====
+
+Note that in Log4j 2.0, this Appender was split into a `JMSQueueAppender` and a `JMSTopicAppender`.
+Starting in Log4j 2.1, these Appenders were combined into the JMS Appender, which makes no distinction between queues and topics.
+However, configurations written for 2.0 which use the `<JMSQueue/>` or `<JMSTopic/>` elements will continue to work with the new `<JMS/>` configuration element.
+
+.JMS Appender parameters
+[cols="1m,1m,1m,5",options="header"]
+|===
+
+|Parameter
+|Type
+|Default
+|Description
+
+|factoryBindingName
+|String
+|
+|The name to locate in the https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html[`Context`] that provides the `ConnectionFactory`.
+This can be any sub-interface of https://download.oracle.com/javaee/5/api/javax/jms/ConnectionFactory.html[`ConnectionFactory`] as well.
+
+This parameter is **required**.
+
+|factoryName
+|String
+|
+|The fully qualified class name that should be used to define the initial `ContextFactory` as defined in https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#INITIAL_CONTEXT_FACTORY[`INITIAL_CONTEXT_FACTORY`].
+
+If a `factoryName` is specified without a `providerURL`, a warning message will be logged as this is likely to cause problems.
+
+This parameter is **required**.
+
+|filter
+|Filter
+|
+|A Filter to determine if the event should be handled by this Appender.
+More than one Filter may be used by using a `CompositeFilter`.
+
+|layout
+|Layout
+|
+|The Layout to use to format the LogEvent.
+
+This parameter is **required** since `2.9`.
+In previous versions `SerializedLayout` was default.
+
+|name
+|String
+|
+|The name of the Appender.
+
+This parameter is **required**.
+
+|password
+|String
+|
+|The password to use to create the JMS connection
+
+|providerURL
+|String
+|
+|The URL of the provider to use as defined by https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#PROVIDER_URL[`PROVIDER_URL`].
+
+This parameter is **required**.
+
+|destinationBindingName
+|String
+|
+|The name to use to locate the https://download.oracle.com/javaee/5/api/javax/jms/Destination.html[`Destination`].
+This can be a `Queue` or `Topic`, and as such, the attribute names `queueBindingName` and `topicBindingName` are aliases to maintain compatibility with the Log4j 2.0 JMS Appenders.
+
+This parameter is **required**.
+
+|securityPrincipalName
+|String
+|
+|The name of the identity of the Principal as specified by https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL[`SECURITY_PRINCIPAL`].
+If a `securityPrincipalName` is specified without `securityCredentials`, a warning message will be logged as this is likely to cause problems.
+
+|securityCredentials
+|String
+|
+|The security credentials for the principal as specified by https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS[`SECURITY_CREDENTIALS`].
+
+|ignoreExceptions
+|boolean
+|true
+|Indicates if exceptions encountered while appending events to be internally logged and then ignored.
+When set to `false` exceptions will be propagated to the caller, instead.
+You must set this to `false` when wrapping this Appender in a `FailoverAppender`.
+
+|immediateFail
+|boolean
+|false
+|When set to `true`, log events will not wait to try to reconnect and will fail immediately if the JMS resources are not available.
+This parameter is introduced in `2.9`.
+
+|reconnectIntervalMillis
+|long
+|5000
+|If set to a value greater than `0`, after an error, the `JMSManager` will attempt to reconnect to the broker after waiting the specified number of milliseconds.
+If the reconnect fails then an exception will be thrown, which can be caught by the application if `ignoreExceptions` is set to `false`.
+This parameter is introduced in `2.9`.
+
+|urlPkgPrefixes
+|String
+|null
+|A colon-separated list of package prefixes for the class name of the factory class that will create a URL context factory as defined by https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#URL_PKG_PREFIXES[`URL_PKG_PREFIXES`]
+
+|userName
+|String
+|null
+|The user ID used to create the JMS connection
+|===
+
+.Example `log4j.xml` demonstrating JMS Appender usage
+[source]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="MyApp">
+
+  <Appenders>
+    <JMS name="jmsQueue"
+         destinationBindingName="MyQueue"
+         factoryBindingName="MyQueueConnectionFactory">
+      <JsonTemplateLayout/>
+    </JMS>
+  </Appenders>
+
+  <Loggers>
+    <Root level="error">
+      <AppenderRef ref="jmsQueue"/>
+    </Root>
+  </Loggers>
+
+</Configuration>
+----
+
+Starting from version `2.9`, you can map your Log4j ``MapMessage``s to JMS ``javax.jms.MapMessage``s, set the Layout of the Appender to `MessageLayout` with `<MessageLayout/>`:
+
+.Example `log4j.xml` demonstrating JMS Appender usage with `MessageLayout` to translate ``MapMessage``s
+[source]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="MyApp">
+
+  <Appenders>
+    <JMS name="jmsQueue"
+         destinationBindingName="MyQueue"
+         factoryBindingName="MyQueueConnectionFactory">
+      <MessageLayout />
+    </JMS>
+  </Appenders>
+
+  <Loggers>
+    <Root level="error">
+      <AppenderRef ref="jmsQueue"/>
+    </Root>
+  </Loggers>
+
+</Configuration>
+----

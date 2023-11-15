@@ -22,7 +22,7 @@ include::_constants.adoc[]
 
 This project provides various https://jakarta.ee/[Jakarta]-specific https://logging.apache.org/log4j[Log4j] components.
 
-include::_log4j-jms.adoc[]
+include::_log4j-jakarta-jms.adoc[]
 
 include::_log4j-jakarta-smtp.adoc[]
 
@@ -68,7 +68,7 @@ To keep your {project-name} module versions aligned, a https://maven.apache.org/
 To use this with Maven, add the dependency listed below to your `pom.xml` file.
 Note that the `<dependencyManagement>` nesting and the `<scope>import</scope>` instruction.
 This will _import_ all modules bundled with the associated Log4j release to your `dependencyManagement`.
-As a result, you don't have to specify versions of the imported modules (`log4j-changelog`, etc.) while using them as a `<dependency>`.
+As a result, you don't have to specify versions of the imported modules (`log4j-jakarta-smtp`, etc.) while using them as a `<dependency>`.
 
 .`pom.xml` snippet importing `log4j-jakarta-bom`
 [source,subs="+attributes"]
