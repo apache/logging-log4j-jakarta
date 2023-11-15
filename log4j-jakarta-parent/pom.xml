@@ -53,6 +53,8 @@
     <mockito.version>5.5.0</mockito.version>
     <spring-framework.version>5.3.29</spring-framework.version>
 
+    <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
+    <jakarta.mail-api.version>2.1.2</jakarta.mail-api.version>
   </properties>
 
   <dependencyManagement>
@@ -62,12 +64,6 @@
         <groupId>org.eclipse.angus</groupId>
         <artifactId>angus-activation</artifactId>
         <version>${angus-activation.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>
@@ -96,16 +92,26 @@
         <scope>import</scope>
       </dependency>
 
+      <!-- `jakarta.mail:jakarta.activation-api` bundled by `jakarta.platform:jakarta.jakartaee-bom:9.1.0` has `com.sun.*` dependencies.
+           Manually overriding it as a workaround. -->
+      <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>${jakarta.activation-api.version}</version>
+      </dependency>
+
+      <!-- `jakarta.mail:jakarta.mail-api` bundled by `jakarta.platform:jakarta.jakartaee-bom:9.1.0` has `com.sun.*` dependencies.
+           Manually overriding it as a workaround. -->
+      <dependency>
+        <groupId>jakarta.mail</groupId>
+        <artifactId>jakarta.mail-api</artifactId>
+        <version>${jakarta.mail-api.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.eclipse.angus</groupId>
-        <artifactId>jakarta.mail</artifactId>
+        <artifactId>angus-mail</artifactId>
         <version>${angus-mail.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>

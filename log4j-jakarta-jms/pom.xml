@@ -33,6 +33,9 @@
 
   <properties>
 
+    <!-- Since this module has no releases yet, suppress `bnd-baseline-plugin` failures: -->
+    <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
+
     <!--
       ~ OSGi and JPMS options
       -->

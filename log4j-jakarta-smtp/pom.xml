@@ -68,13 +68,13 @@
     <dependency>
       <groupId>org.eclipse.angus</groupId>
       <artifactId>angus-activation</artifactId>
-      <scope>runtime</scope>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.eclipse.angus</groupId>
-      <artifactId>jakarta.mail</artifactId>
-      <scope>runtime</scope>
+      <artifactId>angus-mail</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>

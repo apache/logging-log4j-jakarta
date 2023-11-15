@@ -16,7 +16,7 @@
  */
 @Export
 @Open("org.apache.logging.log4j.core")
-@Version("2.20.1")
+@Version("3.0.0")
 package org.apache.logging.log4j.web.appender;
 
 import aQute.bnd.annotation.Export;
