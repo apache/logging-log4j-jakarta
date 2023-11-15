@@ -18,4 +18,106 @@ limitations under the License.
 [#log4j-jakarta-web]
 == Log4j Jakarta Web
 
-TODO
+[#log4j-jakarta-web-intro]
+=== Using Log4j Core in web applications
+
+Using a logging backend like **Log4j Core** in a Jakarta EE application requires particular care.
+Since the lifecycle of a container or web application is independent of the lifecycle of the JVM, it's important for logging resources to be properly cleaned up (database connections closed, files closed, etc.) when the container or web application shuts down.
+
+The purpose of the `log4j-jakarta-web` is to register the appropriate hooks into a container's lifecycle.
+
+[WARNING]
+====
+To avoid problems, some Log4j API and Log4j Core features are automatically disabled, when running in a Jakarta EE environment. Most notably:
+
+- the usage of `ThreadLocal` and garbage-free logging,
+- the JVM shutdown hook.
+====
+
+[#log4j-jakarta-web-installation]
+=== Installation
+
+In order to install `log4j-jakarta-web` in your Web application, you need to add it as runtime dependency:
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+  <groupId>org.apache.logging.log4j</groupId>
+  <artifactId>log4j-jakarta-web</artifactId>
+  <version>{project-version}</version>
+  <scope>runtime</scope>
+</dependency>
+----
+
+[#log4j-jakarta-web-configuration]
+=== Lifecycle hooks and configuration
+
+In a Jakarta EE 9 environment, Log4j Jakarta Web automatically registers a https://jakarta.ee/specifications/servlet/5.0/apidocs/jakarta/servlet/servletcontainerinitializer[ServletContainerInitializer] that takes care of the Log4j Core startup, configuration and shutdown. The initializer can be configured through these https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#initialization-parameters[servlet context initialization parameters]:
+
+.Servlet context initialization parameters
+[cols="1m,1m,5",options="header"]
+|===
+
+|Parameter
+|Default
+|Description
+
+|isLog4jAutoInitializationDisabled
+|false
+|If set to `true` disables the `ServletContainerInitializer`.
+
+|isLog4jAutoShutdownDisabled
+|false
+|If set to `true` disables the shutdown of the logger context.
+
+|log4j.stop.timeout.timeunit
+|SECONDS
+|The https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html[TimeUnit] used to express the shutdown timeout.
+
+|log4j.stop.timeout
+|30
+|The shutdown timeout.
+
+|log4jContextName
+|
+a|Specifies the name of the logger context to use.
+
+It must be **explicitly specified** if `JndiContextSelector` is used.
+
+The default value is:
+
+. the servlet context name, if present,
+. the servlet context path, otherwise.
+
+|isLog4jContextSelectorNamed
+|false
+|Must be set to `true` if Log4j Core uses a `JndiContextSelector`.
+
+|log4jConfiguration
+|
+a|The location of a Log4j Core configuration file.
+If no value is provided:
+
+. if the parent of the web application classloader has a configured logger context, it is used.
+. if the `/WEB-INF` folder contains a file named "log4j2-<name>.<extension>", where `<name>` is the name of the logger context, it will be used as configuration,
+. if the `/WEB-INF` fonder contains a file named "log4j2.<extension>", it will be used,
+. otherwise Log4j Core uses the https://logging.apache.org/log4j/2.x/manual/configuration.html#automatic-configuration[automatic configuration procedure] to configure a new logger context.
+|===
+
+[WARNING]
+====
+The Log4j Jakarta Web JAR file is a web-fragment configured to order before any other web fragments in your application.
+
+While this guarantees that Log4j Core starts before all other initializers and listeners, the Servlet 5.0 Specification (cf. https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#Assembling_the_descriptor[section 8.2.3]) does not give guarantees that Log4j Core will shutdown after all servlet context listeners.
+
+If the shutdown order is important, users must create a `web.xml` descriptor and add the `Log4jServletContextListener` explicitly:
+
+[source,xml,subs="+attributes"]
+----
+<listener>
+  <listener-class>
+    org.apache.logging.log4j.web.Log4jServletContextListener
+  </listener-class>
+</listener>
+----
+====
