@@ -102,4 +102,29 @@
 
   </dependencies>
 
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!--
+            ~ Spring Test requires Servlet API 6.0.0, so we bump the version for testing only.
+            -->
+          <additionalClasspathDependencies>
+            <dependency>
+              <groupId>jakarta.servlet</groupId>
+              <artifactId>jakarta.servlet-api</artifactId>
+              <version>6.0.0</version>
+            </dependency>
+          </additionalClasspathDependencies>
+          <classpathDependencyExcludes>
+            <exclude>jakarta.servlet:jakarta.servlet-api</exclude>
+          </classpathDependencyExcludes>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
 </project>

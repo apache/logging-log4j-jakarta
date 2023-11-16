@@ -40,6 +40,13 @@
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <minimalJavaBuildVersion>[17,18)</minimalJavaBuildVersion>
 
+    <!-- Maven plugin version -->
+    <!--
+      ~ Bump version to 3.2.x for parameter `additionalClasspathDependencies`,
+      ~ which is required by `log4j-jakarta-web` tests.
+      -->
+    <version.maven-surefire>3.2.2</version.maven-surefire>
+
     <!-- dependency versions -->
     <angus-activation.version>2.0.1</angus-activation.version>
     <angus-mail.version>2.0.2</angus-mail.version>
@@ -52,7 +59,6 @@
     <log4j.version>3.0.0-SNAPSHOT</log4j.version>
     <mockito.version>5.5.0</mockito.version>
     <spring-framework.version>6.0.13</spring-framework.version>
-
     <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
     <jakarta.mail-api.version>2.1.2</jakarta.mail-api.version>
   </properties>
