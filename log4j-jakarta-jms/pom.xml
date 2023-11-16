@@ -36,6 +36,8 @@
     <!-- Since this module has no releases yet, suppress `bnd-baseline-plugin` failures: -->
     <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
 
+    <!-- Spring 6.x removed JNDI testing features -->
+    <spring-framework.version>5.3.30</spring-framework.version>
     <!--
       ~ OSGi and JPMS options
       -->
@@ -109,6 +111,12 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
 
