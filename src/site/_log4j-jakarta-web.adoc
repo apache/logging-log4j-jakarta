@@ -52,7 +52,7 @@ In order to install `log4j-jakarta-web` in your Web application, you need to add
 [#log4j-jakarta-web-configuration]
 === Lifecycle hooks and configuration
 
-In a Jakarta EE 9 environment, Log4j Jakarta Web automatically registers a https://jakarta.ee/specifications/servlet/5.0/apidocs/jakarta/servlet/servletcontainerinitializer[ServletContainerInitializer] that takes care of the Log4j Core startup, configuration and shutdown. The initializer can be configured through these https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#initialization-parameters[servlet context initialization parameters]:
+In a Jakarta EE 9 environment, Log4j Jakarta Web automatically registers a https://jakarta.ee/specifications/servlet/5.0/apidocs/jakarta/servlet/servletcontainerinitializer[ServletContainerInitializer] that takes care of the Log4j Core startup, configuration and shutdown. The initializer can be configured through these https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#initialization-parameters[servlet context initialization parameters], which **must** be specified in a `web.xml` deployment descriptor to be effective:
 
 .Servlet context initialization parameters
 [cols="1m,1m,5",options="header"]
@@ -98,15 +98,14 @@ The default value is:
 a|The location of a Log4j Core configuration file.
 If no value is provided:
 
-. if the parent of the web application classloader has a configured logger context, it is used.
-. if the `/WEB-INF` folder contains a file named "log4j2-<name>.<extension>", where `<name>` is the name of the logger context, it will be used as configuration,
-. if the `/WEB-INF` fonder contains a file named "log4j2.<extension>", it will be used,
-. otherwise Log4j Core uses the https://logging.apache.org/log4j/2.x/manual/configuration.html#automatic-configuration[automatic configuration procedure] to configure a new logger context.
+. Log4j Jakarta Web looks for a file named `/WEB-INFlog4j2-<name>.<extension>`, where `<name>` is the name of the logger context,
+. if no such file exists it looks for a file named `/WEB-INF/log4j2.<extension>`,
+. otherwise Log4j Core uses the https://logging.apache.org/log4j/2.x/manual/configuration.html#automatic-configuration[automatic configuration procedure].
 |===
 
 [WARNING]
 ====
-The Log4j Jakarta Web JAR file is a web-fragment configured to order before any other web fragments in your application.
+The Log4j Jakarta Web JAR file is a web-fragment configured to run before any other web fragments in your application.
 
 While this guarantees that Log4j Core starts before all other initializers and listeners, the Servlet 5.0 Specification (cf. https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#Assembling_the_descriptor[section 8.2.3]) does not give guarantees that Log4j Core will shutdown after all servlet context listeners.
 
@@ -121,3 +120,81 @@ If the shutdown order is important, users must create a `web.xml` descriptor and
 </listener>
 ----
 ====
+
+[#log4j-jakarta-web-jndi-configuration]
+==== JNDI configuration
+
+Log4j Core allows the usage of JNDI to coordinate the usage of logger contexts in a Jakarta EE application server.
+In order to use this feature, you need to:
+
+. Install the `log4j-jndi` module.
+. Switch to the `JndiContextSelector`, by setting the `log4j2.*.LoggerContext.selector` Log4j property to `org.apache.logging.log4j.jndi.selector.JndiContextSelector`,
+. For security reasons you need to enable the selector, by setting the `log4j2.*.JNDI.contextSelector` Log4j property to `true`,
+. Each web application needs to configure the servlet context parameter `isLog4jContextSelectorNamed` to `true` and provide a value for the `log4jContextName` servlet context parameter and `java:comp/env/log4j/context-name` JNDI environment entry:
+
+[source,xml,subs="+attributes"]
+----
+<web-app>
+    <context-param>
+        <param-name>isLog4jContextSelectorNamed</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>log4jContextName</param-name>
+        <param-value>your_application_name</param-value>
+    </context-param>
+    <env-entry>
+        <env-entry-name>log4j/context-name</env-entry-name>
+        <env-entry-value>your_application_name</env-entry-value>
+        <env-entry-type>java.lang.String</env-entry-type>
+    </env-entry>
+</web-app>
+----
+
+[#log4j-jakarta-web-lookup]
+=== Web lookup
+
+Log4j Jakarta Web also provides a `${web:...}` lookup
+
+.Web lookup supported keys
+[cols="1m,5",options="header"]
+|===
+
+|Key
+|Description
+
+|attr.<key>
+|Value of the `<key`> servlet context attribute.
+
+|initParam.<key>
+|Value of the `<key>` servlet context initialization parameter.
+
+|rootDir
+|The root directory of the servlet context.
+
+|contextPathName
+|The **first** fragment of the servlet context path.
+
+|contextPath
+|The **entire** servlet context path.
+
+|servletContextName
+|The servlet context name.
+
+|serverInfo
+|The server info.
+
+|effectiveMajorVersion
+|The major version of the Servlet specification supported by the application.
+
+|effectiveMinorVersion
+|The minor version of the Servlet specification supported by the application.
+
+|majorVersion
+|The major version of the Servlet specification supported by the server.
+
+|minorVersion
+|The minor version of the Servlet specification supported by the server.
+
+|<key>
+|The value of `<key>` is searched as context attribute or context initialization parameter.
