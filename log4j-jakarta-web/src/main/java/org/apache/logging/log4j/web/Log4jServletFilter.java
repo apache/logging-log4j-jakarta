@@ -72,6 +72,8 @@ public class Log4jServletFilter implements Filter {
                 chain.doFilter(request, response);
             } finally {
                 this.initializer.clearLoggerContext();
+                // Execute once per thread
+                request.removeAttribute(ALREADY_FILTERED_ATTRIBUTE);
             }
         }
     }
