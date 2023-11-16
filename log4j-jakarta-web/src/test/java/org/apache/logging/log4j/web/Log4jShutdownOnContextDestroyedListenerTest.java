@@ -71,7 +71,7 @@ public class Log4jShutdownOnContextDestroyedListenerTest {
         this.listener.contextDestroyed(this.event);
 
         then(initializer).should(never()).clearLoggerContext();
-        then(initializer).should(never()).stop();
+        then(initializer).should(never()).stop(DEFAULT_STOP_TIMEOUT, DEFAULT_STOP_TIMEOUT_TIMEUNIT);
     }
 
     @Test

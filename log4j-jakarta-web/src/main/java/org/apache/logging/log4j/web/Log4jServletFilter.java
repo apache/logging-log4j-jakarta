@@ -26,6 +26,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 
+import java.util.function.BiConsumer;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.status.StatusLogger;
 
@@ -45,6 +46,7 @@ public class Log4jServletFilter implements Filter {
     private static final Logger LOGGER = StatusLogger.getLogger();
 
     static final String ALREADY_FILTERED_ATTRIBUTE = Log4jServletFilter.class.getName() + ".FILTERED";
+    static final ThreadLocal<ServletRequest> CURRENT_REQUEST = new ThreadLocal<>();
 
     private ServletContext servletContext;
     private Log4jWebLifeCycle initializer;
@@ -56,6 +58,18 @@ public class Log4jServletFilter implements Filter {
 
         this.initializer = WebLoggerContextUtils.getWebLifeCycle(this.servletContext);
         this.initializer.clearLoggerContext(); // the application is mostly finished starting up now
+
+        filterConfig.getServletContext().setAttribute("log4j.requestExecutor",
+                (BiConsumer<ServletRequest, Runnable>) (request, command) -> {
+                    try {
+                        Log4jServletFilter.this.initializer.setLoggerContext();
+                        CURRENT_REQUEST.set(request);
+                        command.run();
+                    } finally {
+                        Log4jServletFilter.this.initializer.clearLoggerContext();
+                        CURRENT_REQUEST.remove();
+                    }
+                });
     }
 
     @Override
@@ -68,10 +82,11 @@ public class Log4jServletFilter implements Filter {
 
             try {
                 this.initializer.setLoggerContext();
-
+                CURRENT_REQUEST.set(request);
                 chain.doFilter(request, response);
             } finally {
                 this.initializer.clearLoggerContext();
+                CURRENT_REQUEST.remove();
                 // Execute once per thread
                 request.removeAttribute(ALREADY_FILTERED_ATTRIBUTE);
             }

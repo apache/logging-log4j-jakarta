@@ -51,7 +51,7 @@
     <junit.version>5.10.0</junit.version>
     <log4j.version>3.0.0-SNAPSHOT</log4j.version>
     <mockito.version>5.5.0</mockito.version>
-    <spring-framework.version>5.3.29</spring-framework.version>
+    <spring-framework.version>6.0.13</spring-framework.version>
 
     <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
     <jakarta.mail-api.version>2.1.2</jakarta.mail-api.version>
@@ -140,6 +140,14 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-bom</artifactId>
         <version>${mockito.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>${spring-framework.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

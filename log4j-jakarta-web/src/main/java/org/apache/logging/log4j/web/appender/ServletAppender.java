@@ -55,7 +55,8 @@ public final class ServletAppender extends AbstractAppender {
                 return null;
             }
             Layout layout = getOrCreateLayout();
-            return new ServletAppender(name, layout, getFilter(), servletContext, isIgnoreExceptions(), logThrowables);
+            return new ServletAppender(name, layout, getFilter(), servletContext, isIgnoreExceptions(), logThrowables,
+                    getPropertyArray());
         }
 
         /**
@@ -85,8 +86,9 @@ public final class ServletAppender extends AbstractAppender {
     private final boolean logThrowables;
 
     private ServletAppender(final String name, final Layout layout, final Filter filter,
-                            final ServletContext servletContext, final boolean ignoreExceptions, final boolean logThrowables) {
-        super(name, filter, layout, ignoreExceptions, Property.EMPTY_ARRAY);
+                            final ServletContext servletContext, final boolean ignoreExceptions, final boolean logThrowables,
+                            Property[] properties) {
+        super(name, filter, layout, ignoreExceptions, properties);
         this.servletContext = servletContext;
         this.logThrowables = logThrowables;
     }

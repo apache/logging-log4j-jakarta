@@ -52,3 +52,7 @@ This minor release contains various bug fixes and improvements.
 ==== Removed
 
 * Remove `log4j-jms` based on Java EE 8+ (https://github.com/apache/logging-log4j2/issues/1966[#1966])
+
+==== Fixed
+
+* Only shutdown Log4j after last `Log4jServletContextListener` is executed. (https://github.com/apache/logging-log4j2/issues/1782[1782])

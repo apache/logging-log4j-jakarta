@@ -17,6 +17,7 @@
 package org.apache.logging.log4j.web;
 
 import java.util.concurrent.atomic.AtomicReference;
+
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 
