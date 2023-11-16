@@ -42,3 +42,14 @@ github:
   protected_branches:
     main:
       required_signatures: true
+
+# Site configuration
+staging:
+  profile: ~
+  whoami: asf-staging
+  subdir: content/log4j/jakarta
+
+publish:
+  profile: ~
+  whoami: asf-site
+  subdir: content/log4j/jakarta
