@@ -27,6 +27,9 @@ updates:
       # Keep at version 3.6.x
       - dependency-name: "org.apache.maven:maven-plugin-api"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      # Keep Jakarta EE at version 9.
+      - dependency-name: "jakarta.platform:*"
+        versions: ["[10,)"]
 
   - package-ecosystem: github-actions
     directory: "/"
