@@ -166,23 +166,14 @@ Log4j Jakarta Web also provides a `${web:...}` lookup
 |attr.<key>
 |Value of the `<key`> servlet context attribute.
 
-|initParam.<key>
-|Value of the `<key>` servlet context initialization parameter.
-
-|rootDir
-|The root directory of the servlet context.
-
 |contextPathName
 |The **first** fragment of the servlet context path.
 
 |contextPath
 |The **entire** servlet context path.
 
-|servletContextName
-|The servlet context name.
-
-|serverInfo
-|The server info.
+|cookie.<key>
+|Value of the `<key>` HTTP cookie.
 
 |effectiveMajorVersion
 |The major version of the Servlet specification supported by the application.
@@ -190,11 +181,252 @@ Log4j Jakarta Web also provides a `${web:...}` lookup
 |effectiveMinorVersion
 |The minor version of the Servlet specification supported by the application.
 
+|header.<key>
+|Value of the `<key>` request HTTP header.
+
+|initParam.<key>
+|Value of the `<key>` servlet context initialization parameter.
+
 |majorVersion
 |The major version of the Servlet specification supported by the server.
 
 |minorVersion
 |The minor version of the Servlet specification supported by the server.
 
+|request.attr.<key>
+|Value of the `<key>` servlet request attribute.
+
+|request.method
+|HTTP request method.
+
+|request.parameter.<key>
+|Value of the `<key>` servlet request parameter.
+
+|request.principal
+|Servlet request principal.
+
+|request.remoteAddress
+|Servlet request remote address.
+
+|request.remoteHost
+|Servlet request remote host.
+
+|request.remotePort
+|Servlet request remote port.
+
+|request.uri
+|Servlet request URI.
+
+|request.url
+|Servlet request URL.
+
+|rootDir
+|The root directory of the servlet context.
+
+|serverInfo
+|The server info.
+
+|servletContextName
+|The servlet context name.
+
+|session.attr.<key>
+|Value of the `<key>` servlet session attribute.
+
+|session.id
+|Servlet session id.
+
 |<key>
 |The value of `<key>` is searched as context attribute or context initialization parameter.
+|===
+
+[#log4j-jakarta-web-async]
+=== Asynchronous Requests and Threads
+
+The handling of asynchronous requests is tricky, and regardless of Servlet container version or configuration Log4j cannot handle everything automatically.
+When standard requests, forwards, includes, and error resources are processed, the `Log4jServletFilter` binds the `LoggerContext` to the thread handling the request.
+After request processing completes, the filter unbinds the `LoggerContext` from the thread.
+
+Similarly, when an internal request is dispatched using a
+`javax.servlet.AsyncContext`, the `Log4jServletFilter` also binds the
+`LoggerContext` to the thread handling the request and unbinds it when
+request processing completes. However, this only happens for requests
+_dispatched_ through the `AsyncContext`. There are other asynchronous
+activities that can take place other than internal dispatched requests.
+
+For example, after starting an `AsyncContext` you could start up a
+separate thread to process the request in the background, possibly
+writing the response with the `ServletOutputStream`. Filters cannot
+intercept the execution of this thread. Filters also cannot intercept
+threads that you start in the background during non-asynchronous
+requests. This is true whether you use a brand new thread or a thread
+borrowed from a thread pool. So what can you do for these special
+threads?
+
+You may not need to do anything. If you didn't use the
+`isLog4jContextSelectorNamed` context parameter, there is no need to
+bind the `LoggerContext` to the thread. Log4j can safely locate the
+`LoggerContext` on its own. In these cases, the filter provides only
+very modest performance gains, and only when creating new `Logger` instances.
+However, if you _did_ specify the `isLog4jContextSelectorNamed` context
+parameter with the value "true", you will need to manually bind the
+`LoggerContext` to asynchronous threads. Otherwise, Log4j will not be
+able to locate it.
+
+Thankfully, Log4j provides a simple mechanism for binding the
+`LoggerContext` to asynchronous threads in these special circumstances.
+The simplest way to do this is to wrap the `Runnable` instance that is
+passed to the `AsyncContext.start()` method.
+
+[source,java]
+----
+import java.io.IOException;
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.web.WebLoggerContextUtils;
+
+public class TestAsyncServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+        final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(WebLoggerContextUtils.wrapExecutionContext(this.getServletContext(), new Runnable() {
+            @Override
+            public void run() {
+                final Logger logger = LogManager.getLogger(TestAsyncServlet.class);
+                logger.info("Hello, servlet!");
+            }
+        }));
+    }
+
+    @Override
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+        final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(new Runnable() {
+            @Override
+            public void run() {
+                final Log4jWebSupport webSupport =
+                    WebLoggerContextUtils.getWebLifeCycle(TestAsyncServlet.this.getServletContext());
+                webSupport.setLoggerContext();
+                // do stuff
+                webSupport.clearLoggerContext();
+            }
+        });
+    }
+}
+----
+
+This can be slightly more convenient when using Java 1.8 and lambda
+functions as demonstrated below.
+
+[source,java]
+----
+import java.io.IOException;
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.web.WebLoggerContextUtils;
+
+public class TestAsyncServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(WebLoggerContextUtils.wrapExecutionContext(this.getServletContext(), () -> {
+            final Logger logger = LogManager.getLogger(TestAsyncServlet.class);
+            logger.info("Hello, servlet!");
+        }));
+    }
+}
+----
+
+Alternatively, you can obtain the
+link:../log4j-web/apidocs/org/apache/logging/log4j/web/Log4jWebLifeCycle.html[`Log4jWebLifeCycle`]
+instance from the `ServletContext` attributes, call its
+`setLoggerContext` method as the very first line of code in your
+asynchronous thread, and call its `clearLoggerContext` method as the
+very last line of code in your asynchronous thread. The following code
+demonstrates this. It uses the container thread pool to execute
+asynchronous request processing, passing an anonymous inner `Runnable`
+to the `start` method.
+
+[source,java]
+----
+import java.io.IOException;
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.web.Log4jWebLifeCycle;
+import org.apache.logging.log4j.web.WebLoggerContextUtils;
+
+public class TestAsyncServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+         final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(new Runnable() {
+            @Override
+            public void run() {
+                final Log4jWebLifeCycle webLifeCycle =
+                    WebLoggerContextUtils.getWebLifeCycle(TestAsyncServlet.this.getServletContext());
+                webLifeCycle.setLoggerContext();
+                try {
+                    final Logger logger = LogManager.getLogger(TestAsyncServlet.class);
+                    logger.info("Hello, servlet!");
+                } finally {
+                    webLifeCycle.clearLoggerContext();
+                }
+            }
+        });
+   }
+}
+----
+
+Note that you _must_ call `clearLoggerContext` once your thread is
+finished processing. Failing to do so will result in memory leaks. If
+using a thread pool, it can even disrupt the logging of other web
+applications in your container. For that reason, the example here shows
+clearing the context in a `finally` block, which will always execute.
+
+[#log4j-jakarta-web-appender]
+=== Servlet Appender
+
+Log4j Jakarta Web provides a Servlet Appender that uses the servlet context as the log target.
+For example:
+
+[source,xml]
+----
+<Configuration status="WARN" name="ServletTest">
+
+    <Appenders>
+        <Servlet name="Servlet">
+            <PatternLayout pattern="%m%n%ex{none}"/>
+        </Servlet>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Servlet"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
+----
+
+To avoid double logging of exceptions to the servlet context, you must
+use `%ex{none}` in your `PatternLayout` as shown in the example. The
+exception will be omitted from the message text but it is passed to the
+servlet context as the actual `Throwable` object.
