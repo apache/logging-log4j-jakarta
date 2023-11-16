@@ -16,6 +16,11 @@
  */
 package org.apache.logging.log4j.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import jakarta.servlet.ServletContext;
 import java.util.Map;
 import org.apache.logging.log4j.core.Appender;
@@ -27,11 +32,6 @@ import org.apache.logging.log4j.core.lookup.StrSubstitutor;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockServletContext;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class WebLookupTest {
 
@@ -178,5 +178,4 @@ public class WebLookupTest {
         initializer.setLoggerContext();
         return initializer;
     }
-
 }

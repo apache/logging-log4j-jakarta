@@ -69,26 +69,29 @@ public class WebLookup extends AbstractLookup {
         if (key.startsWith(REQUEST_HEADER_PREFIX)) {
             final String name = key.substring(REQUEST_HEADER_PREFIX.length());
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ? HttpServletRequest.class.cast(req).getHeader(name) : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getHeader(name)
+                    : null;
         }
 
         if (key.startsWith(REQUEST_COOKIE_PREFIX)) {
             final String name = key.substring(REQUEST_COOKIE_PREFIX.length());
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ?
-                    Stream.of(HttpServletRequest.class.cast(req).getCookies())
-                        .filter(c -> name.equals(c.getName()))
-                        .findFirst()
-                        .map(Cookie::getValue)
-                        .orElse(null) :
-                    null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? Stream.of(HttpServletRequest.class.cast(req).getCookies())
+                            .filter(c -> name.equals(c.getName()))
+                            .findFirst()
+                            .map(Cookie::getValue)
+                            .orElse(null)
+                    : null;
         }
 
         if (key.startsWith(REQUEST_PARAMETER_PREFIX)) {
             final String name = key.substring(REQUEST_PARAMETER_PREFIX.length());
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ?
-                    HttpServletRequest.class.cast(req).getParameter(name) : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getParameter(name)
+                    : null;
         }
 
         if (key.startsWith(SESSION_ATTR_PREFIX)) {
@@ -105,57 +108,67 @@ public class WebLookup extends AbstractLookup {
 
         if ("request.method".equals(key)) {
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ? HttpServletRequest.class.cast(req).getMethod() : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getMethod()
+                    : null;
         }
 
         if ("request.uri".equals(key)) {
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ? HttpServletRequest.class.cast(req).getRequestURI() : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getRequestURI()
+                    : null;
         }
 
         if ("request.url".equals(key)) {
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ?
-                    HttpServletRequest.class.cast(req).getRequestURL().toString() : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getRequestURL().toString()
+                    : null;
         }
 
         if ("request.remoteAddress".equals(key)) {
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ?
-                    HttpServletRequest.class.cast(req).getRemoteAddr() : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getRemoteAddr()
+                    : null;
         }
 
         if ("request.remoteHost".equals(key)) {
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ?
-                    HttpServletRequest.class.cast(req).getRemoteHost() : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getRemoteHost()
+                    : null;
         }
 
         if ("request.remotePort".equals(key)) {
             final ServletRequest req = getRequest();
-            return HttpServletRequest.class.isInstance(req) ?
-                    Integer.toString(HttpServletRequest.class.cast(req).getRemotePort()) : null;
+            return HttpServletRequest.class.isInstance(req)
+                    ? Integer.toString(HttpServletRequest.class.cast(req).getRemotePort())
+                    : null;
         }
 
         if ("request.principal".equals(key)) {
             final ServletRequest req = getRequest();
-            final Principal pcp = req instanceof HttpServletRequest ? ((HttpServletRequest) req).getUserPrincipal() : null;
+            final Principal pcp =
+                    req instanceof HttpServletRequest ? ((HttpServletRequest) req).getUserPrincipal() : null;
             return pcp == null ? null : pcp.getName();
         }
 
         if ("session.id".equals(key)) {
             final ServletRequest req = getRequest();
-            final HttpSession session = HttpServletRequest.class.isInstance(req) ?
-                    HttpServletRequest.class.cast(req).getSession(false) : null;
+            final HttpSession session = HttpServletRequest.class.isInstance(req)
+                    ? HttpServletRequest.class.cast(req).getSession(false)
+                    : null;
             return session == null ? null : session.getId();
         }
 
         if ("rootDir".equals(key)) {
             final String root = ctx.getRealPath("/");
             if (root == null) {
-                final String msg = "Failed to resolve web:rootDir -- " +
-                        "servlet container unable to translate virtual path " +
-                        " to real path (probably not deployed as exploded";
+                final String msg =
+                        "Failed to resolve web:rootDir -- " + "servlet container unable to translate virtual path "
+                                + " to real path (probably not deployed as exploded";
                 throw new IllegalStateException(msg);
             }
             return root;
