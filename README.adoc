@@ -20,4 +20,4 @@ https://search.maven.org/search?q=g:org.apache.logging.log4j%20a:log4j-jakarta-b
 https://www.apache.org/licenses/LICENSE-2.0.txt[image:https://img.shields.io/github/license/apache/logging-log4j-jakarta.svg[License]]
 
 This project provides various https://jakarta.ee/[Jakarta]-specific https://logging.apache.org/log4j[Log4j] components: `log4j-jakarta-jms`, `log4j-jakarta-smtp`, `log4j-jakarta-web`, etc.
-See https://logging.apache.org/log4j/jakarta[the project website] for details.
+See https://logging.staged.apache.org/log4j/jakarta[the project website] for details.
