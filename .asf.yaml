@@ -17,6 +17,12 @@
 
 # `.asf.yaml` documentation: https://cwiki.apache.org/confluence/display/INFRA/Git+-+.asf.yaml+features
 
+notifications:
+  # GitHub already provides notifications for PRs and issues.
+  # Please don't duplicate that noise here!
+  commits: commits@logging.apache.org
+  pullrequests_bot_dependabot: robots@logging.apache.org
+
 github:
 
   description: "Jakarta-specific Apache Log4j components"
