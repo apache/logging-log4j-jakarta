@@ -3,6 +3,6 @@
        xmlns="http://logging.apache.org/log4j/changelog"
        xsi:schemaLocation="http://logging.apache.org/log4j/changelog https://logging.apache.org/log4j/changelog-0.1.2.xsd"
        type="changed">
-  <issue id="4" link="https://github.com/apache/logging-log4j-jakarta/pull/4"/>
-  <description format="asciidoc">Update `org.springframework:spring-framework-bom` to version `6.1.0`</description>
+  <issue id="5" link="https://github.com/apache/logging-log4j-jakarta/pull/5"/>
+  <description format="asciidoc">Update `org.springframework:spring-framework-bom` to version `6.1.1`</description>
 </entry>
