@@ -20,7 +20,9 @@
 notifications:
   # GitHub already provides notifications for PRs and issues.
   # Please don't duplicate that noise here!
-  commits: commits@logging.apache.org
+  commits:      commits@logging.apache.org
+  issues:       notifications@logging.apache.org
+  pullrequests: notifications@logging.apache.org
   pullrequests_bot_dependabot: robots@logging.apache.org
 
 github:
