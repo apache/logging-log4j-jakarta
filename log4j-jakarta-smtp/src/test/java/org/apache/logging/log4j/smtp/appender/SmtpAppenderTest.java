@@ -31,12 +31,9 @@ import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.apache.logging.log4j.core.test.AvailablePortFinder;
-import org.apache.logging.log4j.core.test.categories.Appenders;
 import org.apache.logging.log4j.smtp.MimeMessageBuilder;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
-@Category(Appenders.Smtp.class)
 public class SmtpAppenderTest {
 
     private static final String HOST = "localhost";
