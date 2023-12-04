@@ -49,6 +49,7 @@ This minor release contains various bug fixes and improvements.
 ==== Changed
 
 * Fork Jakarta-specific components from `logging-log4j2` repository to `logging-log4j-jakarta` (https://github.com/apache/logging-log4j2/issues/1966[#1966])
+* Update `commons-logging:commons-logging` to version `1.3.0` (https://github.com/apache/logging-log4j-jakarta/pull/7[7])
 * Update `org.junit:junit-bom` to version `5.10.1` (https://github.com/apache/logging-log4j-jakarta/pull/1[1])
 * Update `org.mockito:mockito-bom` to version `5.8.0` (https://github.com/apache/logging-log4j-jakarta/pull/6[6])
 * Update `org.springframework:spring-framework-bom` to version `6.1.1` (https://github.com/apache/logging-log4j-jakarta/pull/5[5])
