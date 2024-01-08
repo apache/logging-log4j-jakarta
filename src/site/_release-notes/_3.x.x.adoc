@@ -53,7 +53,6 @@ This minor release contains various bug fixes and improvements.
 * Update `org.apache.logging:logging-parent` to version `10.5.0` (https://github.com/apache/logging-log4j-jakarta/pull/9[9])
 * Update `org.junit:junit-bom` to version `5.10.1` (https://github.com/apache/logging-log4j-jakarta/pull/1[1])
 * Update `org.mockito:mockito-bom` to version `5.8.0` (https://github.com/apache/logging-log4j-jakarta/pull/6[6])
-* Update `org.springframework:spring-framework-bom` to version `6.1.2` (https://github.com/apache/logging-log4j-jakarta/pull/8[8])
 
 ==== Fixed
 
@@ -66,3 +65,4 @@ This minor release contains various bug fixes and improvements.
 ==== Updated
 
 * Update `apache/logging-parent` to version `` (https://github.com/apache/logging-log4j-jakarta/pull/11[11])
+* Update `org.springframework:spring-framework-bom` to version `6.1.2` (https://github.com/apache/logging-log4j-jakarta/pull/8[8])

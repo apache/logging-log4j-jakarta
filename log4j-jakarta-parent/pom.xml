@@ -58,7 +58,7 @@
     <junit.version>5.10.1</junit.version>
     <log4j.version>3.0.0-SNAPSHOT</log4j.version>
     <mockito.version>5.8.0</mockito.version>
-    <spring-framework.version>6.1.0</spring-framework.version>
+    <spring-framework.version>6.1.2</spring-framework.version>
     <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
     <jakarta.mail-api.version>2.1.2</jakarta.mail-api.version>
   </properties>
