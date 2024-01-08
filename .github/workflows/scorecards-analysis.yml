@@ -29,7 +29,7 @@ permissions: read-all
 jobs:
 
   analysis:
-    uses: apache/logging-parent/.github/workflows/scorecards-analysis-reusable.yaml@41c16b60b32a75e63ed9d5143d8432fdccfafa1c # 10.4.0
+    uses: apache/logging-parent/.github/workflows/scorecards-analysis-reusable.yaml@e06e488e3adf5712dd7001f8b50248ca6ecf3600 # 10.4.0
     permissions:
       # Needed to upload the results to the code-scanning dashboard.
       security-events: write
