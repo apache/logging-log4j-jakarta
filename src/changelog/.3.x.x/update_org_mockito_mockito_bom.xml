@@ -3,6 +3,6 @@
        xmlns="http://logging.apache.org/log4j/changelog"
        xsi:schemaLocation="http://logging.apache.org/log4j/changelog https://logging.apache.org/log4j/changelog-0.1.3.xsd"
        type="updated">
-  <issue id="15" link="https://github.com/apache/logging-log4j-jakarta/pull/15"/>
-  <description format="asciidoc">Update `org.mockito:mockito-bom` to version `5.9.0`</description>
+  <issue id="16" link="https://github.com/apache/logging-log4j-jakarta/pull/16"/>
+  <description format="asciidoc">Update `org.mockito:mockito-bom` to version `5.10.0`</description>
 </entry>
