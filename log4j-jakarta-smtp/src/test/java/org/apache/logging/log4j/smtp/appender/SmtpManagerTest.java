@@ -21,8 +21,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.apache.logging.log4j.async.logger.RingBufferLogEvent;
 import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.async.RingBufferLogEvent;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
 import org.apache.logging.log4j.core.impl.MementoMessage;
@@ -88,16 +88,15 @@ public class SmtpManagerTest {
     // LOG4J2-3172: make sure existing protections are not violated
     @Test
     void testAdd_WhereLog4jLogEventWithReusableMessage() {
-        final LogEvent event = new Log4jLogEvent.Builder()
-                .setMessage(getReusableMessage("test message"))
-                .build();
+        final LogEvent event =
+                new Log4jLogEvent.Builder().setMessage(getReusableMessage()).build();
         testAdd(event);
     }
 
     // LOG4J2-3172: make sure existing protections are not violated
     @Test
     void testAdd_WhereMutableLogEvent() {
-        final MutableLogEvent event = new MutableLogEvent(new StringBuilder("test message"), null);
+        final LogEvent event = new MutableLogEvent(new StringBuilder("test message"), null);
         testAdd(event);
     }
 
@@ -111,7 +110,7 @@ public class SmtpManagerTest {
                 null,
                 null,
                 null,
-                getReusableMessage("test message"),
+                getReusableMessage(),
                 null,
                 null,
                 null,
@@ -124,9 +123,9 @@ public class SmtpManagerTest {
         testAdd(event);
     }
 
-    private ReusableMessage getReusableMessage(final String text) {
+    private ReusableMessage getReusableMessage() {
         final ReusableSimpleMessage message = new ReusableSimpleMessage();
-        message.set(text);
+        message.set("test message");
         return message;
     }
 }

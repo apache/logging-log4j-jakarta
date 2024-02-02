@@ -35,16 +35,17 @@ ij_any_align_multiline_parameters_in_calls = false
 ij_any_align_multiline_parameters = false
 ij_any_align_multiline_chained_methods = false
 
-# Only use `import *` when importing 5 or more
-ij_java_names_count_to_use_import_on_demand = 5
-ij_java_class_count_to_use_import_on_demand = 5
+# Do not use `import *` when importing 5 or more
+ij_java_names_count_to_use_import_on_demand = 99
+ij_java_class_count_to_use_import_on_demand = 99
 
 # Order imports
 # `*` denotes any packages except explicitly specified ones
 # `|` denotes a blank line
 # `$` denotes the prefix for static packages
 # `**` means including subpackages
-ij_java_imports_layout = java.**, |, javax.**, |, org.apache.logging.**, |, *, |, $java.**, |, $javax.**, |, $org.apache.logging.**, |, $*
+ij_java_imports_layout =
+ij_java_imports_layout = $*, |, *
 
 # Force curly braces
 ij_any_for_brace_force = always
