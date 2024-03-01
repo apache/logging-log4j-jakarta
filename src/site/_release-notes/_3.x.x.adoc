@@ -63,6 +63,7 @@ This minor release contains various bug fixes and improvements.
 ==== Updated
 
 * Update `apache/logging-parent` to version `` (https://github.com/apache/logging-log4j-jakarta/pull/13[13])
+* Update `jakarta.activation:jakarta.activation-api` to version `2.1.3` (https://github.com/apache/logging-log4j-jakarta/pull/20[20])
 * Update `org.eclipse.angus:angus-activation` to version `2.0.2` (https://github.com/apache/logging-log4j-jakarta/pull/19[19])
 * Update `org.junit:junit-bom` to version `5.10.2` (https://github.com/apache/logging-log4j-jakarta/pull/17[17])
 * Update `org.mockito:mockito-bom` to version `5.10.0` (https://github.com/apache/logging-log4j-jakarta/pull/16[16])
