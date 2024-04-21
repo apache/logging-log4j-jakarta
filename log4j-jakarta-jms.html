@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Log4j Jakarta JMS Appender :: Apache Log4j Jakarta</title>
+    <link rel="canonical" href="https://logging.apache.org/log4j/jakarta/log4j-jakarta-jms.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.4">
+<link rel="stylesheet" href="./_/css/site.css">
+<link rel="icon" href="./_/../_images/favicon.ico" type="image/x-icon">
+<!-- `@asciidoctor/tabs` extension styles -->
+<link rel="stylesheet" href="./_/css/vendor/tabs.css">
+<style>
+  /* `page-toclevels` greater than 4 are not supported by Antora UI, patching it: */
+  .toc .toc-menu li[data-level="4"] a {
+    padding-left: 2.75rem
+  }
+  /* Replace the default highlight.js color for strings from red to green: */
+  .hljs-string {
+    color: #0f8532;
+  }
+</style>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-item title">Apache Log4j Jakarta</span>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://logging.apache.org">a subproject of&nbsp;<strong>Apache Logging Services</strong></a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Home</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Components</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="log4j-jakarta-jms.html">Log4j Jakarta JMS Appender</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="log4j-jakarta-smtp.html">Log4j Jakarta SMTP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="log4j-jakarta-web.html">Log4j Jakarta Web</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="development.html">Development</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://logging.apache.org/download.html">Download</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://logging.apache.org/support.html">Support</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://logging.apache.org/security.html">Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li>Components</li>
+    <li><a href="log4j-jakarta-jms.html">Log4j Jakarta JMS Appender</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/apache/logging-log4j-jakarta/edit/main/src/site/antora/modules/ROOT/pages/log4j-jakarta-jms.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Log4j Jakarta JMS Appender</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The JMS Appender sends the formatted log event to a JMS Destination.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dependency"><a class="anchor" href="#dependency"></a>Dependency</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You need to have the <code>org.apache.logging.log4j:log4j-jakarta-jms</code> dependency in your classpath:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+  &lt;artifactId&gt;log4j-jakarta-jms&lt;/artifactId&gt;
+  &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>JMS Appender requires a <code>jakarta.jms:jakarta.jms-api</code> implementation (e.g., the one provided by Eclipse GlassFish or Apache ActiveMQ) at runtime.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="config"><a class="anchor" href="#config"></a>Configuration</h2>
+<div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The JMS Appender requires JNDI support so as of release 2.15.1 and will not function unless <code>log4j2.enableJndi=true</code> is configured as a system property or environment variable.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Note that in Log4j 2.0, this Appender was split into a <code>JMSQueueAppender</code> and a <code>JMSTopicAppender</code>.
+Starting in Log4j 2.1, these Appenders were combined into the JMS Appender, which makes no distinction between queues and topics.
+However, configurations written for 2.0 which use the <code>&lt;JMSQueue/&gt;</code> or <code>&lt;JMSTopic/&gt;</code> elements will continue to work with the new <code>&lt;JMS/&gt;</code> configuration element.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. JMS Appender parameters</caption>
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 62.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>factoryBindingName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name to locate in the <a href="https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html"><code>Context</code></a> that provides the <code>ConnectionFactory</code>.
+This can be any sub-interface of <a href="https://download.oracle.com/javaee/5/api/javax/jms/ConnectionFactory.html"><code>ConnectionFactory</code></a> as well.</p>
+<p class="tableblock">This parameter is <strong>required</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>factoryName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The fully qualified class name that should be used to define the initial <code>ContextFactory</code> as defined in <a href="https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#INITIAL_CONTEXT_FACTORY"><code>INITIAL_CONTEXT_FACTORY</code></a>.</p>
+<p class="tableblock">If a <code>factoryName</code> is specified without a <code>providerURL</code>, a warning message will be logged as this is likely to cause problems.</p>
+<p class="tableblock">This parameter is <strong>required</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>filter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Filter</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A Filter to determine if the event should be handled by this Appender.
+More than one Filter may be used by using a <code>CompositeFilter</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>layout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Layout</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Layout to use to format the LogEvent.</p>
+<p class="tableblock">This parameter is <strong>required</strong> since <code>2.9</code>.
+In previous versions <code>SerializedLayout</code> was default.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the Appender.</p>
+<p class="tableblock">This parameter is <strong>required</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The password to use to create the JMS connection</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>providerURL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URL of the provider to use as defined by <a href="https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#PROVIDER_URL"><code>PROVIDER_URL</code></a>.</p>
+<p class="tableblock">This parameter is <strong>required</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>destinationBindingName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name to use to locate the <a href="https://download.oracle.com/javaee/5/api/javax/jms/Destination.html"><code>Destination</code></a>.
+This can be a <code>Queue</code> or <code>Topic</code>, and as such, the attribute names <code>queueBindingName</code> and <code>topicBindingName</code> are aliases to maintain compatibility with the Log4j 2.0 JMS Appenders.</p>
+<p class="tableblock">This parameter is <strong>required</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>securityPrincipalName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the identity of the Principal as specified by <a href="https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL"><code>SECURITY_PRINCIPAL</code></a>.
+If a <code>securityPrincipalName</code> is specified without <code>securityCredentials</code>, a warning message will be logged as this is likely to cause problems.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>securityCredentials</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The security credentials for the principal as specified by <a href="https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS"><code>SECURITY_CREDENTIALS</code></a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ignoreExceptions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates if exceptions encountered while appending events to be internally logged and then ignored.
+When set to <code>false</code> exceptions will be propagated to the caller, instead.
+You must set this to <code>false</code> when wrapping this Appender in a <code>FailoverAppender</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>immediateFail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When set to <code>true</code>, log events will not wait to try to reconnect and will fail immediately if the JMS resources are not available.
+This parameter is introduced in <code>2.9</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reconnectIntervalMillis</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>long</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5000</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If set to a value greater than <code>0</code>, after an error, the <code>JMSManager</code> will attempt to reconnect to the broker after waiting the specified number of milliseconds.
+If the reconnect fails then an exception will be thrown, which can be caught by the application if <code>ignoreExceptions</code> is set to <code>false</code>.
+This parameter is introduced in <code>2.9</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>urlPkgPrefixes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A colon-separated list of package prefixes for the class name of the factory class that will create a URL context factory as defined by <a href="https://download.oracle.com/javase/7/docs/api/javax/naming/Context.html#URL_PKG_PREFIXES"><code>URL_PKG_PREFIXES</code></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The user ID used to create the JMS connection</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">Example <code>log4j.xml</code> demonstrating JMS Appender usage</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Configuration status="warn" name="MyApp"&gt;
+
+  &lt;Appenders&gt;
+    &lt;JMS name="jmsQueue"
+         destinationBindingName="MyQueue"
+         factoryBindingName="MyQueueConnectionFactory"&gt;
+      &lt;JsonTemplateLayout/&gt;
+    &lt;/JMS&gt;
+  &lt;/Appenders&gt;
+
+  &lt;Loggers&gt;
+    &lt;Root level="error"&gt;
+      &lt;AppenderRef ref="jmsQueue"/&gt;
+    &lt;/Root&gt;
+  &lt;/Loggers&gt;
+
+&lt;/Configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Starting from version <code>2.9</code>, you can map your Log4j <code>MapMessage</code>s to JMS <code>javax.jms.MapMessage</code>s, set the Layout of the Appender to <code>MessageLayout</code> with <code>&lt;MessageLayout/&gt;</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>log4j.xml</code> demonstrating JMS Appender usage with <code>MessageLayout</code> to translate <code>MapMessage</code>s</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Configuration status="warn" name="MyApp"&gt;
+
+  &lt;Appenders&gt;
+    &lt;JMS name="jmsQueue"
+         destinationBindingName="MyQueue"
+         factoryBindingName="MyQueueConnectionFactory"&gt;
+      &lt;MessageLayout /&gt;
+    &lt;/JMS&gt;
+  &lt;/Appenders&gt;
+
+  &lt;Loggers&gt;
+    &lt;Root level="error"&gt;
+      &lt;AppenderRef ref="jmsQueue"/&gt;
+    &lt;/Root&gt;
+  &lt;/Loggers&gt;
+
+&lt;/Configuration&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>
+    Copyright © 1999-2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>.
+    Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License, Version 2.0</a>.
+    Please read our <a href="https://privacy.apache.org/policies/privacy-policy-public.html">privacy policy</a>.
+  </p>
+  <p>
+    Apache, Log4j, and the Apache feather logo are trademarks or registered trademarks of The Apache Software Foundation.
+    Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+    Other names may be trademarks of their respective owners.
+  </p>
+</footer>
+<script id="site-script" src="./_/js/site.js" data-ui-root-path="./_"></script>
+<script async src="./_/js/vendor/highlight.js"></script>
+<!-- `@asciidoctor/tabs` extension scripts -->
+<script async src="./_/js/vendor/tabs.js"></script>
+  </body>
+</html>

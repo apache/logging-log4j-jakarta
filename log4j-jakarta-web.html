@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Log4j Jakarta Web :: Apache Log4j Jakarta</title>
+    <link rel="canonical" href="https://logging.apache.org/log4j/jakarta/log4j-jakarta-web.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.4">
+<link rel="stylesheet" href="./_/css/site.css">
+<link rel="icon" href="./_/../_images/favicon.ico" type="image/x-icon">
+<!-- `@asciidoctor/tabs` extension styles -->
+<link rel="stylesheet" href="./_/css/vendor/tabs.css">
+<style>
+  /* `page-toclevels` greater than 4 are not supported by Antora UI, patching it: */
+  .toc .toc-menu li[data-level="4"] a {
+    padding-left: 2.75rem
+  }
+  /* Replace the default highlight.js color for strings from red to green: */
+  .hljs-string {
+    color: #0f8532;
+  }
+</style>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-item title">Apache Log4j Jakarta</span>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://logging.apache.org">a subproject of&nbsp;<strong>Apache Logging Services</strong></a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Home</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Components</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="log4j-jakarta-jms.html">Log4j Jakarta JMS Appender</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="log4j-jakarta-smtp.html">Log4j Jakarta SMTP</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="log4j-jakarta-web.html">Log4j Jakarta Web</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="development.html">Development</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://logging.apache.org/download.html">Download</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://logging.apache.org/support.html">Support</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://logging.apache.org/security.html">Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li>Components</li>
+    <li><a href="log4j-jakarta-web.html">Log4j Jakarta Web</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/apache/logging-log4j-jakarta/edit/main/src/site/antora/modules/ROOT/pages/log4j-jakarta-web.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Log4j Jakarta Web</h1>
+<div class="sect1">
+<h2 id="intro"><a class="anchor" href="#intro"></a>Using Log4j Core in web applications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using a logging backend like <strong>Log4j Core</strong> in a Jakarta EE application requires particular care.
+Since the lifecycle of a container or web application is independent of the lifecycle of the JVM, it&#8217;s important for logging resources to be properly cleaned up (database connections closed, files closed, etc.) when the container or web application shuts down.</p>
+</div>
+<div class="paragraph">
+<p>The purpose of the <code>log4j-jakarta-web</code> is to register the appropriate hooks into a container&#8217;s lifecycle.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>To avoid problems, some Log4j API and Log4j Core features are automatically disabled, when running in a Jakarta EE environment. Most notably:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the usage of <code>ThreadLocal</code> and garbage-free logging,</p>
+</li>
+<li>
+<p>the JVM shutdown hook.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="installation"><a class="anchor" href="#installation"></a>Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to install <code>log4j-jakarta-web</code> in your Web application, you need to add it as runtime dependency:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+  &lt;artifactId&gt;log4j-jakarta-web&lt;/artifactId&gt;
+  &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="config"><a class="anchor" href="#config"></a>Lifecycle hooks and configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a Jakarta EE 9 environment, Log4j Jakarta Web automatically registers a <a href="https://jakarta.ee/specifications/servlet/5.0/apidocs/jakarta/servlet/servletcontainerinitializer">ServletContainerInitializer</a> that takes care of the Log4j Core startup, configuration and shutdown. The initializer can be configured through these <a href="https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#initialization-parameters">servlet context initialization parameters</a>, which <strong>must</strong> be specified in a <code>web.xml</code> deployment descriptor to be effective:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Servlet context initialization parameters</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLog4jAutoInitializationDisabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If set to <code>true</code> disables the <code>ServletContainerInitializer</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLog4jAutoShutdownDisabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If set to <code>true</code> disables the shutdown of the logger context.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>log4j.stop.timeout.timeunit</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SECONDS</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html">TimeUnit</a> used to express the shutdown timeout.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>log4j.stop.timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>30</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The shutdown timeout.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>log4jContextName</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Specifies the name of the logger context to use.</p>
+</div>
+<div class="paragraph">
+<p>It must be <strong>explicitly specified</strong> if <code>JndiContextSelector</code> is used.</p>
+</div>
+<div class="paragraph">
+<p>The default value is:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>the servlet context name, if present,</p>
+</li>
+<li>
+<p>the servlet context path, otherwise.</p>
+</li>
+</ol>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLog4jContextSelectorNamed</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must be set to <code>true</code> if Log4j Core uses a <code>JndiContextSelector</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>log4jConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>The location of a Log4j Core configuration file.
+If no value is provided:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log4j Jakarta Web looks for a file named <code>/WEB-INFlog4j2-&lt;name&gt;.&lt;extension&gt;</code>, where <code>&lt;name&gt;</code> is the name of the logger context,</p>
+</li>
+<li>
+<p>if no such file exists it looks for a file named <code>/WEB-INF/log4j2.&lt;extension&gt;</code>,</p>
+</li>
+<li>
+<p>otherwise Log4j Core uses the <a href="https://logging.apache.org/log4j/2.x/manual/configuration.html#automatic-configuration">automatic configuration procedure</a>.</p>
+</li>
+</ol>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The Log4j Jakarta Web JAR file is a web-fragment configured to run before any other web fragments in your application.</p>
+</div>
+<div class="paragraph">
+<p>While this guarantees that Log4j Core starts before all other initializers and listeners, the Servlet 5.0 Specification (cf. <a href="https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#Assembling_the_descriptor">section 8.2.3</a>) does not give guarantees that Log4j Core will shutdown after all servlet context listeners.</p>
+</div>
+<div class="paragraph">
+<p>If the shutdown order is important, users must create a <code>web.xml</code> descriptor and add the <code>Log4jServletContextListener</code> explicitly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;listener&gt;
+  &lt;listener-class&gt;
+    org.apache.logging.log4j.web.Log4jServletContextListener
+  &lt;/listener-class&gt;
+&lt;/listener&gt;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="jndi"><a class="anchor" href="#jndi"></a>JNDI configuration</h3>
+<div class="paragraph">
+<p>Log4j Core allows the usage of JNDI to coordinate the usage of logger contexts in a Jakarta EE application server.
+In order to use this feature, you need to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install the <code>log4j-jndi</code> module.</p>
+</li>
+<li>
+<p>Switch to the <code>JndiContextSelector</code>, by setting the <code>log4j2.*.LoggerContext.selector</code> Log4j property to <code>org.apache.logging.log4j.jndi.selector.JndiContextSelector</code>,</p>
+</li>
+<li>
+<p>For security reasons you need to enable the selector, by setting the <code>log4j2.*.JNDI.contextSelector</code> Log4j property to <code>true</code>,</p>
+</li>
+<li>
+<p>Each web application needs to configure the servlet context parameter <code>isLog4jContextSelectorNamed</code> to <code>true</code> and provide a value for the <code>log4jContextName</code> servlet context parameter and <code>java:comp/env/log4j/context-name</code> JNDI environment entry:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;web-app&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;isLog4jContextSelectorNamed&lt;/param-name&gt;
+        &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;log4jContextName&lt;/param-name&gt;
+        &lt;param-value&gt;your_application_name&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;env-entry&gt;
+        &lt;env-entry-name&gt;log4j/context-name&lt;/env-entry-name&gt;
+        &lt;env-entry-value&gt;your_application_name&lt;/env-entry-value&gt;
+        &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
+    &lt;/env-entry&gt;
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="lookup"><a class="anchor" href="#lookup"></a>Web lookup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Log4j Jakarta Web also provides a <code>${web:&#8230;&#8203;}</code> lookup</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Web lookup supported keys</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 83.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>attr.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key</code>&gt; servlet context attribute.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>contextPathName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>first</strong> fragment of the servlet context path.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>contextPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>entire</strong> servlet context path.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cookie.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key&gt;</code> HTTP cookie.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>effectiveMajorVersion</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The major version of the Servlet specification supported by the application.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>effectiveMinorVersion</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minor version of the Servlet specification supported by the application.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>header.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key&gt;</code> request HTTP header.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>initParam.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key&gt;</code> servlet context initialization parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>majorVersion</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The major version of the Servlet specification supported by the server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>minorVersion</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minor version of the Servlet specification supported by the server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.attr.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key&gt;</code> servlet request attribute.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP request method.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.parameter.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key&gt;</code> servlet request parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.principal</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet request principal.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.remoteAddress</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet request remote address.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.remoteHost</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet request remote host.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.remotePort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet request remote port.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.uri</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet request URI.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request.url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet request URL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rootDir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The root directory of the servlet context.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>serverInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The server info.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>servletContextName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The servlet context name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>session.attr.&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value of the <code>&lt;key&gt;</code> servlet session attribute.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>session.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet session id.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;key&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The value of <code>&lt;key&gt;</code> is searched as context attribute or context initialization parameter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="async"><a class="anchor" href="#async"></a>Asynchronous Requests and Threads</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The handling of asynchronous requests is tricky, and regardless of Servlet container version or configuration Log4j cannot handle everything automatically.
+When standard requests, forwards, includes, and error resources are processed, the <code>Log4jServletFilter</code> binds the <code>LoggerContext</code> to the thread handling the request.
+After request processing completes, the filter unbinds the <code>LoggerContext</code> from the thread.</p>
+</div>
+<div class="paragraph">
+<p>Similarly, when an internal request is dispatched using a
+<code>javax.servlet.AsyncContext</code>, the <code>Log4jServletFilter</code> also binds the
+<code>LoggerContext</code> to the thread handling the request and unbinds it when
+request processing completes. However, this only happens for requests
+<em>dispatched</em> through the <code>AsyncContext</code>. There are other asynchronous
+activities that can take place other than internal dispatched requests.</p>
+</div>
+<div class="paragraph">
+<p>For example, after starting an <code>AsyncContext</code> you could start up a
+separate thread to process the request in the background, possibly
+writing the response with the <code>ServletOutputStream</code>. Filters cannot
+intercept the execution of this thread. Filters also cannot intercept
+threads that you start in the background during non-asynchronous
+requests. This is true whether you use a brand new thread or a thread
+borrowed from a thread pool. So what can you do for these special
+threads?</p>
+</div>
+<div class="paragraph">
+<p>You may not need to do anything. If you didn&#8217;t use the
+<code>isLog4jContextSelectorNamed</code> context parameter, there is no need to
+bind the <code>LoggerContext</code> to the thread. Log4j can safely locate the
+<code>LoggerContext</code> on its own. In these cases, the filter provides only
+very modest performance gains, and only when creating new <code>Logger</code> instances.
+However, if you <em>did</em> specify the <code>isLog4jContextSelectorNamed</code> context
+parameter with the value "true", you will need to manually bind the
+<code>LoggerContext</code> to asynchronous threads. Otherwise, Log4j will not be
+able to locate it.</p>
+</div>
+<div class="paragraph">
+<p>Thankfully, Log4j provides a simple mechanism for binding the
+<code>LoggerContext</code> to asynchronous threads in these special circumstances.
+The simplest way to do this is to wrap the <code>Runnable</code> instance that is
+passed to the <code>AsyncContext.start()</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import java.io.IOException;
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.web.WebLoggerContextUtils;
+
+public class TestAsyncServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+        final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(WebLoggerContextUtils.wrapExecutionContext(this.getServletContext(), new Runnable() {
+            @Override
+            public void run() {
+                final Logger logger = LogManager.getLogger(TestAsyncServlet.class);
+                logger.info("Hello, servlet!");
+            }
+        }));
+    }
+
+    @Override
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+        final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(new Runnable() {
+            @Override
+            public void run() {
+                final Log4jWebSupport webSupport =
+                    WebLoggerContextUtils.getWebLifeCycle(TestAsyncServlet.this.getServletContext());
+                webSupport.setLoggerContext();
+                // do stuff
+                webSupport.clearLoggerContext();
+            }
+        });
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This can be slightly more convenient when using Java 1.8 and lambda
+functions as demonstrated below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import java.io.IOException;
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.web.WebLoggerContextUtils;
+
+public class TestAsyncServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(WebLoggerContextUtils.wrapExecutionContext(this.getServletContext(), () -&gt; {
+            final Logger logger = LogManager.getLogger(TestAsyncServlet.class);
+            logger.info("Hello, servlet!");
+        }));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can obtain the
+<a href="../log4j-web/apidocs/org/apache/logging/log4j/web/Log4jWebLifeCycle.html"><code>Log4jWebLifeCycle</code></a>
+instance from the <code>ServletContext</code> attributes, call its
+<code>setLoggerContext</code> method as the very first line of code in your
+asynchronous thread, and call its <code>clearLoggerContext</code> method as the
+very last line of code in your asynchronous thread. The following code
+demonstrates this. It uses the container thread pool to execute
+asynchronous request processing, passing an anonymous inner <code>Runnable</code>
+to the <code>start</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import java.io.IOException;
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.web.Log4jWebLifeCycle;
+import org.apache.logging.log4j.web.WebLoggerContextUtils;
+
+public class TestAsyncServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+         final AsyncContext asyncContext = req.startAsync();
+        asyncContext.start(new Runnable() {
+            @Override
+            public void run() {
+                final Log4jWebLifeCycle webLifeCycle =
+                    WebLoggerContextUtils.getWebLifeCycle(TestAsyncServlet.this.getServletContext());
+                webLifeCycle.setLoggerContext();
+                try {
+                    final Logger logger = LogManager.getLogger(TestAsyncServlet.class);
+                    logger.info("Hello, servlet!");
+                } finally {
+                    webLifeCycle.clearLoggerContext();
+                }
+            }
+        });
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that you <em>must</em> call <code>clearLoggerContext</code> once your thread is
+finished processing. Failing to do so will result in memory leaks. If
+using a thread pool, it can even disrupt the logging of other web
+applications in your container. For that reason, the example here shows
+clearing the context in a <code>finally</code> block, which will always execute.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appender"><a class="anchor" href="#appender"></a>Servlet Appender</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Log4j Jakarta Web provides a Servlet Appender that uses the servlet context as the log target.
+For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;Configuration status="WARN" name="ServletTest"&gt;
+
+    &lt;Appenders&gt;
+        &lt;Servlet name="Servlet"&gt;
+            &lt;PatternLayout pattern="%m%n%ex{none}"/&gt;
+        &lt;/Servlet&gt;
+    &lt;/Appenders&gt;
+
+    &lt;Loggers&gt;
+        &lt;Root level="debug"&gt;
+            &lt;AppenderRef ref="Servlet"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+
+&lt;/Configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To avoid double logging of exceptions to the servlet context, you must
+use <code>%ex{none}</code> in your <code>PatternLayout</code> as shown in the example. The
+exception will be omitted from the message text but it is passed to the
+servlet context as the actual <code>Throwable</code> object.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>
+    Copyright © 1999-2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>.
+    Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License, Version 2.0</a>.
+    Please read our <a href="https://privacy.apache.org/policies/privacy-policy-public.html">privacy policy</a>.
+  </p>
+  <p>
+    Apache, Log4j, and the Apache feather logo are trademarks or registered trademarks of The Apache Software Foundation.
+    Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+    Other names may be trademarks of their respective owners.
+  </p>
+</footer>
+<script id="site-script" src="./_/js/site.js" data-ui-root-path="./_"></script>
+<script async src="./_/js/vendor/highlight.js"></script>
+<!-- `@asciidoctor/tabs` extension scripts -->
+<script async src="./_/js/vendor/tabs.js"></script>
+  </body>
+</html>
