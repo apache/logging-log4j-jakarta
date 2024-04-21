@@ -15,11 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ////
 
-[#log4j-jakarta-web]
-== Log4j Jakarta Web
+= Log4j Jakarta Web
 
-[#log4j-jakarta-web-intro]
-=== Using Log4j Core in web applications
+[#intro]
+== Using Log4j Core in web applications
 
 Using a logging backend like **Log4j Core** in a Jakarta EE application requires particular care.
 Since the lifecycle of a container or web application is independent of the lifecycle of the JVM, it's important for logging resources to be properly cleaned up (database connections closed, files closed, etc.) when the container or web application shuts down.
@@ -34,8 +33,8 @@ To avoid problems, some Log4j API and Log4j Core features are automatically disa
 - the JVM shutdown hook.
 ====
 
-[#log4j-jakarta-web-installation]
-=== Installation
+[#installation]
+== Installation
 
 In order to install `log4j-jakarta-web` in your Web application, you need to add it as runtime dependency:
 
@@ -49,8 +48,8 @@ In order to install `log4j-jakarta-web` in your Web application, you need to add
 </dependency>
 ----
 
-[#log4j-jakarta-web-configuration]
-=== Lifecycle hooks and configuration
+[#config]
+== Lifecycle hooks and configuration
 
 In a Jakarta EE 9 environment, Log4j Jakarta Web automatically registers a https://jakarta.ee/specifications/servlet/5.0/apidocs/jakarta/servlet/servletcontainerinitializer[ServletContainerInitializer] that takes care of the Log4j Core startup, configuration and shutdown. The initializer can be configured through these https://jakarta.ee/specifications/servlet/5.0/jakarta-servlet-spec-5.0#initialization-parameters[servlet context initialization parameters], which **must** be specified in a `web.xml` deployment descriptor to be effective:
 
@@ -121,8 +120,8 @@ If the shutdown order is important, users must create a `web.xml` descriptor and
 ----
 ====
 
-[#log4j-jakarta-web-jndi-configuration]
-==== JNDI configuration
+[#jndi]
+=== JNDI configuration
 
 Log4j Core allows the usage of JNDI to coordinate the usage of logger contexts in a Jakarta EE application server.
 In order to use this feature, you need to:
@@ -151,8 +150,8 @@ In order to use this feature, you need to:
 </web-app>
 ----
 
-[#log4j-jakarta-web-lookup]
-=== Web lookup
+[#lookup]
+== Web lookup
 
 Log4j Jakarta Web also provides a `${web:...}` lookup
 
@@ -239,8 +238,8 @@ Log4j Jakarta Web also provides a `${web:...}` lookup
 |The value of `<key>` is searched as context attribute or context initialization parameter.
 |===
 
-[#log4j-jakarta-web-async]
-=== Asynchronous Requests and Threads
+[#async]
+== Asynchronous Requests and Threads
 
 The handling of asynchronous requests is tricky, and regardless of Servlet container version or configuration Log4j cannot handle everything automatically.
 When standard requests, forwards, includes, and error resources are processed, the `Log4jServletFilter` binds the `LoggerContext` to the thread handling the request.
@@ -401,8 +400,8 @@ using a thread pool, it can even disrupt the logging of other web
 applications in your container. For that reason, the example here shows
 clearing the context in a `finally` block, which will always execute.
 
-[#log4j-jakarta-web-appender]
-=== Servlet Appender
+[#appender]
+== Servlet Appender
 
 Log4j Jakarta Web provides a Servlet Appender that uses the servlet context as the log target.
 For example:
@@ -427,6 +426,6 @@ For example:
 ----
 
 To avoid double logging of exceptions to the servlet context, you must
-use `%ex{none}` in your `PatternLayout` as shown in the example. The
+use `%ex\{none}` in your `PatternLayout` as shown in the example. The
 exception will be omitted from the message text but it is passed to the
 servlet context as the actual `Throwable` object.

@@ -31,7 +31,7 @@
   <parent>
     <groupId>org.apache.logging</groupId>
     <artifactId>logging-parent</artifactId>
-    <version>10.5.0</version>
+    <version>11.0.0</version>
   </parent>
 
   <groupId>org.apache.logging.log4j</groupId>
@@ -146,7 +146,7 @@
   </ciManagement>
 
   <distributionManagement>
-    <downloadUrl>https://logging.apache.org/log4j/jakarta/latest/#distribution</downloadUrl>
+    <downloadUrl>https://logging.apache.org/download.html</downloadUrl>
   </distributionManagement>
 
   <properties>

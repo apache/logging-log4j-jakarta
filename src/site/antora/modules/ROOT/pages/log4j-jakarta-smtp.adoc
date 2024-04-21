@@ -15,14 +15,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ////
 
-[#log4j-jakarta-smtp]
-== Log4j Jakarta SMTP
+= Log4j Jakarta SMTP
 
 Log4j Jakarta SMTP appender sends an e-mail when a specific logging event occurs, typically on
 errors or fatal errors.
 
-[#log4j-jakarta-smtp-dependency]
-=== Dependency
+[#dependency]
+== Dependency
 
 You need to have the `org.apache.logging.log4j:log4j-jakarta-smtp` dependency in your classpath:
 
@@ -41,8 +40,8 @@ SMTP Appender requires `jakarta.activation:jakarta.activation-api` and `jakarta.
 You can use `org.eclipse.angus:angus-activation` and `org.eclipse.angus:angus-mail`, or any other of your preference.
 ====
 
-[#log4j-jakarta-smtp-config]
-=== Configuration
+[#config]
+== Configuration
 
 The number of logging events delivered in an e-mail depend on the value of `bufferSize` option.
 The SMTP Appender keeps only the last `bufferSize` logging events in its cyclic buffer.
@@ -162,7 +161,7 @@ See https://logging.apache.org/log4j/2.x/manual/appenders.html#SSL[SSL Configura
 |===
 
 .Example `log4j.xml` demonstrating SMTP Appender usage
-[source]
+[source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp">

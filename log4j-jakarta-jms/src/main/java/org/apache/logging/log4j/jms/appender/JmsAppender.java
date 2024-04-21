@@ -26,8 +26,8 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.appender.AbstractManager;
 import org.apache.logging.log4j.core.config.Property;
-import org.apache.logging.log4j.core.util.Constants;
 import org.apache.logging.log4j.jms.appender.JmsManager.JmsManagerConfiguration;
+import org.apache.logging.log4j.jndi.JndiProperties;
 import org.apache.logging.log4j.plugins.Configurable;
 import org.apache.logging.log4j.plugins.Plugin;
 import org.apache.logging.log4j.plugins.PluginAliases;
@@ -93,8 +93,12 @@ public class JmsAppender extends AbstractAppender {
         @SuppressWarnings("resource") // actualJmsManager and jndiManager are managed by the JmsAppender
         @Override
         public JmsAppender build() {
-            if (!Constants.JNDI_JMS_ENABLED) {
-                LOGGER.error("JNDI has not been enabled. The log4j2.enableJndi property must be set to true");
+            final boolean jndiJmsEnabled = getConfiguration()
+                    .getEnvironment()
+                    .getProperty(JndiProperties.class)
+                    .enableJms();
+            if (!jndiJmsEnabled) {
+                LOGGER.error("JNDI has not been enabled. The `log4j2.*.jndi.enableJms` property must be set to `true`");
                 return null;
             }
             JmsManager actualJmsManager = jmsManager;

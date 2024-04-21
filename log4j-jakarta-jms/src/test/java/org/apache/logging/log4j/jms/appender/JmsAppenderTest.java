@@ -36,7 +36,6 @@ import java.util.Map;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
-import org.apache.logging.log4j.core.impl.Log4jPropertyKey;
 import org.apache.logging.log4j.core.test.junit.LoggerContextRule;
 import org.apache.logging.log4j.jndi.test.junit.JndiRule;
 import org.apache.logging.log4j.message.Message;
@@ -78,7 +77,7 @@ public class JmsAppenderTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        System.setProperty(Log4jPropertyKey.JNDI_ENABLE_JMS.getSystemKey(), "true");
+        System.setProperty("log4j.*.jndi.enableJms", "true");
     }
 
     public JmsAppenderTest() throws Exception {

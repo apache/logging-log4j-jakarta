@@ -15,13 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ////
 
-[#log4j-jakarta-jms]
-== Log4j Jakarta JMS Appender
+= Log4j Jakarta JMS Appender
 
 The JMS Appender sends the formatted log event to a JMS Destination.
 
-[#log4j-jakarta-jms-dependency]
-=== Dependency
+[#dependency]
+== Dependency
 
 You need to have the `org.apache.logging.log4j:log4j-jakarta-jms` dependency in your classpath:
 
@@ -39,8 +38,8 @@ You need to have the `org.apache.logging.log4j:log4j-jakarta-jms` dependency in 
 JMS Appender requires a `jakarta.jms:jakarta.jms-api` implementation (e.g., the one provided by Eclipse GlassFish or Apache ActiveMQ) at runtime.
 ====
 
-[#log4j-jakarta-jms-config]
-=== Configuration
+[#config]
+== Configuration
 
 [WARNING]
 ====
@@ -161,7 +160,7 @@ This parameter is introduced in `2.9`.
 |===
 
 .Example `log4j.xml` demonstrating JMS Appender usage
-[source]
+[source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp">
@@ -186,7 +185,7 @@ This parameter is introduced in `2.9`.
 Starting from version `2.9`, you can map your Log4j ``MapMessage``s to JMS ``javax.jms.MapMessage``s, set the Layout of the Appender to `MessageLayout` with `<MessageLayout/>`:
 
 .Example `log4j.xml` demonstrating JMS Appender usage with `MessageLayout` to translate ``MapMessage``s
-[source]
+[source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp">
