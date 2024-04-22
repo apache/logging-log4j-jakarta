@@ -234,7 +234,9 @@ public final class SmtpAppender extends AbstractAppender {
         @Override
         public SmtpAppender build() {
             if (getLayout() == null) {
-                setLayout(HtmlLayout.createDefaultLayout());
+                setLayout(HtmlLayout.newBuilder()
+                        .setConfiguration(getConfiguration())
+                        .build());
             }
             if (getFilter() == null) {
                 setFilter(ThresholdFilter.createFilter(null, null, null));
