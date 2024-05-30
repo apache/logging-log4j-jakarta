@@ -11,12 +11,13 @@
 <!-- `@asciidoctor/tabs` extension styles -->
 <link rel="stylesheet" href="./_/css/vendor/tabs.css">
 <style>
-  /* Default `h4` and `h5` are smaller than the normal text, fix header font sizing: */
+  /* Default `h4`, `h5`, and `h6` are smaller than the normal text, fix header font sizing: */
   .doc h1 { font-size: 1.9rem; }
   .doc h2 { font-size: 1.7rem; }
   .doc h3 { font-size: 1.5rem; font-weight: 400; }
   .doc h4 { font-size: 1.3rem; font-weight: 500; }
   .doc h5 { font-size: 1.1rem; font-weight: 500; text-decoration: underline; }
+  .doc h6 { font-size: 0.9rem; font-weight: 500; text-decoration: underline; }
   /* Default `code`, `pre`, and `.colist` (source code annotations) fonts are too big, adjust them: */
   .doc .colist>table code, .doc p code, .doc thead code { font-size: 0.8em; }
   .doc pre { font-size: 0.7rem; }
@@ -123,8 +124,9 @@
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="maven-bom"><a class="anchor" href="#maven-bom"></a>Maven Bill of Materials (BOM)</h3>
+<div class="sect1">
+<h2 id="maven-bom"><a class="anchor" href="#maven-bom"></a>Maven Bill of Materials (BOM)</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>To keep your Log4j Jakarta module versions aligned, a <a href="https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#bill-of-materials-bom-poms">Maven Bill of Materials (BOM) POM</a> is provided for your convenience.</p>
 </div>
@@ -148,6 +150,7 @@ As a result, you don&#8217;t have to specify versions of the imported modules (<
     &lt;/dependency&gt;
   &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;</code></pre>
+</div>
 </div>
 </div>
 </div>
