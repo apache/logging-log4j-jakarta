@@ -22,7 +22,7 @@ limitations under the License.
 This project provides various https://jakarta.ee/[Jakarta]-specific {logging-services-url}/log4j[Log4j] components.
 
 [#maven-bom]
-=== Maven Bill of Materials (BOM)
+== Maven Bill of Materials (BOM)
 
 To keep your {project-name} module versions aligned, a https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#bill-of-materials-bom-poms[Maven Bill of Materials (BOM) POM] is provided for your convenience.
 
