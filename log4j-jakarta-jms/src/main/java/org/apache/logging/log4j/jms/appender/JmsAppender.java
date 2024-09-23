@@ -98,7 +98,7 @@ public class JmsAppender extends AbstractAppender {
                     .getProperty(JndiProperties.class)
                     .enableJms();
             if (!jndiJmsEnabled) {
-                LOGGER.error("JNDI has not been enabled. The `log4j2.*.jndi.enableJms` property must be set to `true`");
+                LOGGER.error("JNDI has not been enabled. The `log4j.jndi.enableJms` property must be set to `true`");
                 return null;
             }
             JmsManager actualJmsManager = jmsManager;

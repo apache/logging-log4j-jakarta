@@ -408,7 +408,8 @@ public class SmtpManager extends AbstractManager {
             if (data.protocol.equals("smtps")) {
                 final SslConfiguration sslConfiguration = data.sslConfiguration;
                 if (sslConfiguration != null) {
-                    final SSLSocketFactory sslSocketFactory = sslConfiguration.getSslSocketFactory();
+                    final SSLSocketFactory sslSocketFactory =
+                            sslConfiguration.getSslContext().getSocketFactory();
                     properties.put(prefix + ".ssl.socketFactory", sslSocketFactory);
                     properties.setProperty(
                             prefix + ".ssl.checkserveridentity", Boolean.toString(sslConfiguration.isVerifyHostName()));
