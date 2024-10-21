@@ -55,7 +55,7 @@
     <hamcrest.version>3.0</hamcrest.version>
     <jakartaee-bom.version>9.1.0</jakartaee-bom.version>
     <javax-jms.version>2.0.1</javax-jms.version>
-    <junit.version>5.11.2</junit.version>
+    <junit.version>5.11.3</junit.version>
     <log4j.version>3.0.0-SNAPSHOT</log4j.version>
     <mockito.version>5.14.1</mockito.version>
     <spring-framework.version>6.1.13</spring-framework.version>
