@@ -41,7 +41,6 @@ import org.apache.logging.log4j.core.lookup.PropertiesLookup;
 import org.apache.logging.log4j.core.lookup.StrSubstitutor;
 import org.apache.logging.log4j.core.selector.ContextSelector;
 import org.apache.logging.log4j.core.selector.NamedContextSelector;
-import org.apache.logging.log4j.core.util.Loader;
 import org.apache.logging.log4j.core.util.NetUtils;
 import org.apache.logging.log4j.spi.LoggerContextFactory;
 import org.apache.logging.log4j.util.LoaderUtil;
@@ -53,14 +52,6 @@ import org.apache.logging.log4j.util.Strings;
 final class Log4jWebInitializerImpl extends AbstractLifeCycle implements Log4jWebLifeCycle {
 
     private static final String WEB_INF = "/WEB-INF/";
-
-    static {
-        if (Loader.isClassAvailable("org.apache.logging.log4j.core.web.JNDIContextFilter")) {
-            throw new IllegalStateException("You are using Log4j 2 in a web application with the old, extinct "
-                    + "log4j-web artifact. This is not supported and could cause serious runtime problems. Please"
-                    + "remove the log4j-web JAR file from your application.");
-        }
-    }
 
     private final Map<String, String> map = new ConcurrentHashMap<>();
     private final StrSubstitutor substitutor =
