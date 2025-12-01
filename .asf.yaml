@@ -82,6 +82,5 @@ github:
         required_approving_review_count: 1
 
 publish:
-  profile: ~
   whoami: asf-site
   subdir: content/log4j/jakarta
