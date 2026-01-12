@@ -1,5 +1,4 @@
 staging:
-  profile: ~
   whoami: main-site-stg-out
   subdir: content/log4j/jakarta
 
